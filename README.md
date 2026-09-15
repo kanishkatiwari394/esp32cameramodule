@@ -30,7 +30,7 @@
 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
 
-## 📚 Table of contents
+<details><summary> <h2><b>Table of contents</b> </h2></summary>
 
 <table>
 <tr>
@@ -69,10 +69,10 @@
 </td>
 </tr>
 </table>
-
+</details>
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
 
-## 🛡️ What is Raksha Rail?
+<h2> >>What is Raksha Rail?</h2>
 
 Raksha Rail is a **railway safety monitoring system** built for a hackathon. When a tagged bag or item passes an RFID reader
 on a platform, the system automatically photographs it and shows the photo, the RFID UID, the reader, the platform and the
@@ -114,7 +114,7 @@ mindmap
 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
 
-## 🖼️ Screenshots
+<details><summary><h3><b>SᴄʀᴇᴇɴSʜᴏᴛs</summary>
 
 These are real screenshots of the app running in demo mode (`npm run dev`). The original Raksha Rail design is unchanged. It now shows live cloud data.
 
@@ -130,8 +130,8 @@ These are real screenshots of the app running in demo mode (`npm run dev`). The 
 </table>
 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
-## 🧭 Architecture
+</details>
+<h2><b>Architecture</b></h2>
 
 <img src="docs/assets/pipeline.svg" width="100%" alt="Animated live data pipeline"/>
 
@@ -170,7 +170,7 @@ flowchart LR
   class CDN,DB,TG store
   class BROWSER user
 ```
-
+<details><summary><h2>ꜰʟᴏᴡ</h2></summary>
 | Layer | Technology | Responsibility |
 |---|---|---|
 | 🏷️ Sensing | 2× RFID readers + Arduino UNO | Read the tag UID, know which reader saw it, point the camera with a servo |
@@ -180,6 +180,7 @@ flowchart LR
 | 🍃 Data | MongoDB Atlas | Users, detections, devices, rate-limit counters |
 | 🖥️ UI | Existing HTML/CSS/JS on Vercel | Login, dashboard, live camera monitor, history |
 | ✈️ Alerts | Telegram Bot API (optional) | Photo + RFID details sent to a chat |
+</details>
 
 > [!NOTE]
 > The backend **never talks to the Arduino**. Only the ESP32-CAM calls the API. The browser and the API share the same
@@ -222,7 +223,7 @@ sequenceDiagram
 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
 
-## 📁 Project structure
+<details><summary><h3>Project structure<h3></h3></summary>
 
 ```text
 raksha-rail/
@@ -262,23 +263,24 @@ raksha-rail/
 ├── 🎨 docs/                      README graphics and screenshots
 ├── package.json · vercel.json · .env.example · .gitignore
 ```
+</details>
+<img src="docs/assets/divider.svg" width="100%" alt=""/>
+<h3> What changed in the original pages</h3>
 
-### ✨ What changed in the original pages
 
-| Page | ❌ Before | ✅ Now |
+| ᴘᴀɢᴇ |   ʙᴇꜰᴏʀᴇ |   ɴᴏᴡ |
 |---|---|---|
-| `index.html` | Any input "logged in" | Real login, inline error message, **Remember me** keeps you signed in for 7 days, auto-redirect if already signed in |
-| `page2.html` | Hard-coded `98% CLEAR`, `VAPOR SENSORS ONLINE` | Real device status and counts. The security index is **N/A** until captures are analyzed, and the narcotics/explosive cards say **NOT ANALYZED** |
-| `page3.html` | Browser webcam + fake "Unattended Bag 94%" | Latest ESP32-CAM image from Cloudinary, RFID UID, reader, platform, device, timestamp, threat status, camera ONLINE/OFFLINE, Wi-Fi signal, filterable paginated history, **auto-updates every 3 s** |
-| Logout | Linked to a missing `loginform.html` | Clears the secure session and returns to the login page |
-
+| ɪɴᴅᴇx.ʜᴛᴍʟ | ᴀɴʏ ɪɴᴘᴜᴛ "ʟᴏɢɢᴇᴅ ɪɴ" | ʀᴇᴀʟ ʟᴏɢɪɴ, ɪɴʟɪɴᴇ ᴇʀʀᴏʀ ᴍᴇꜱꜱᴀɢᴇ, ʀᴇᴍᴇᴍʙᴇʀ ᴍᴇ ᴋᴇᴇᴘꜱ ʏᴏᴜ ꜱɪɢɴᴇᴅ ɪɴ ꜰᴏʀ 𝟽 ᴅᴀʏꜱ, ᴀᴜᴛᴏ-ʀᴇᴅɪʀᴇᴄᴛ ɪꜰ ᴀʟʀᴇᴀᴅʏ ꜱɪɢɴᴇᴅ ɪɴ |
+| ᴘᴀɢᴇ𝟸.ʜᴛᴍʟ | ʜᴀʀᴅ-ᴄᴏᴅᴇᴅ 𝟿𝟾% ᴄʟᴇᴀʀ, ᴠᴀᴘᴏʀ ꜱᴇɴꜱᴏʀꜱ ᴏɴʟɪɴᴇ | ʀᴇᴀʟ ᴅᴇᴠɪᴄᴇ ꜱᴛᴀᴛᴜꜱ ᴀɴᴅ ᴄᴏᴜɴᴛꜱ. ᴛʜᴇ ꜱᴇᴄᴜʀɪᴛʏ ɪɴᴅᴇx ɪꜱ ɴ/ᴀ ᴜɴᴛɪʟ ᴄᴀᴘᴛᴜʀᴇꜱ ᴀʀᴇ ᴀɴᴀʟʏᴢᴇᴅ, ᴀɴᴅ ᴛʜᴇ ɴᴀʀᴄᴏᴛɪᴄꜱ/ᴇxᴘʟᴏꜱɪᴠᴇ ᴄᴀʀᴅꜱ ꜱᴀʏ ɴᴏᴛ ᴀɴᴀʟʏᴢᴇᴅ |
+| ᴘᴀɢᴇ𝟹.ʜᴛᴍʟ | ʙʀᴏᴡꜱᴇʀ ᴡᴇʙᴄᴀᴍ + ꜰᴀᴋᴇ "ᴜɴᴀᴛᴛᴇɴᴅᴇᴅ ʙᴀɢ 𝟿𝟺%" | ʟᴀᴛᴇꜱᴛ ᴇꜱᴘ𝟹𝟸-ᴄᴀᴍ ɪᴍᴀɢᴇ ꜰʀᴏᴍ ᴄʟᴏᴜᴅɪɴᴀʀʏ, ʀꜰɪᴅ ᴜɪᴅ, ʀᴇᴀᴅᴇʀ, ᴘʟᴀᴛꜰᴏʀᴍ, ᴅᴇᴠɪᴄᴇ, ᴛɪᴍᴇꜱᴛᴀᴍᴘ, ᴛʜʀᴇᴀᴛ ꜱᴛᴀᴛᴜꜱ, ᴄᴀᴍᴇʀᴀ ᴏɴʟɪɴᴇ/ᴏꜰꜰʟɪɴᴇ, ᴡɪ-ꜰɪ ꜱɪɢɴᴀʟ, ꜰɪʟᴛᴇʀᴀʙʟᴇ ᴘᴀɢɪɴᴀᴛᴇᴅ ʜɪꜱᴛᴏʀʏ, ᴀᴜᴛᴏ-ᴜᴘᴅᴀᴛᴇꜱ ᴇᴠᴇʀʏ 𝟹 ꜱ |
+| ʟᴏɢᴏᴜᴛ | ʟɪɴᴋᴇᴅ ᴛᴏ ᴀ ᴍɪꜱꜱɪɴɢ ʟᴏɢɪɴꜰᴏʀᴍ.ʜᴛᴍʟ | ᴄʟᴇᴀʀꜱ ᴛʜᴇ ꜱᴇᴄᴜʀᴇ ꜱᴇꜱꜱɪᴏɴ ᴀɴᴅ ʀᴇᴛᴜʀɴꜱ ᴛᴏ ᴛʜᴇ ʟᴏɢɪɴ ᴘᴀɢᴇ |
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
 
-## 🔌 Hardware & firmware
+<h3> Hardware & firmware</h3>
 
 <img src="docs/assets/capture.svg" width="100%" alt="Animated ESP32-CAM capture pipeline"/>
 
-### 🧠 Arduino UNO logic
+<h3>Arduino UNO logic</h3>
 
 ```mermaid
 flowchart LR
@@ -295,9 +297,10 @@ flowchart LR
   classDef act fill:#0e7490,stroke:#67e8f9,color:#fff
   class B,D,E,F,G act
 ```
+<img src="docs/assets/divider.svg" width="100%" alt=""/>
 
 ### 📷 ESP32-CAM firmware logic
-
+ 
 ```mermaid
 flowchart TD
   A(["⚡ Power on"]) --> B["Init camera<br/>RGB565 · QVGA · PSRAM"]
@@ -328,34 +331,31 @@ flowchart TD
   class N good
   class O,B1 bad
 ```
-
+ 
 > [!WARNING]
 > The camera module is marked **RHYX-M21-45** and behaves like a **GC2145**. It is **not an OV2640** and has **no hardware
 > JPEG**. `PIXFORMAT_JPEG` does not work. The firmware captures `PIXFORMAT_RGB565` at `FRAMESIZE_QVGA` and converts it with
 > `frame2jpg()` in software.
-
+ 
 ### 🧰 Flash the ESP32-CAM
-
+ 
 1. **Arduino IDE → Boards Manager →** install **esp32 by Espressif Systems** (2.0.14+ or 3.x).
 2. Open [`firmware/esp32cam_raksha/esp32cam_raksha.ino`](firmware/esp32cam_raksha/esp32cam_raksha.ino).
 3. Copy `secrets.example.h` → **`secrets.h`** (git-ignored) and fill in:
-
-   ```cpp
+```cpp
    #define WIFI_SSID        "your-wifi-name"          // 2.4 GHz network
    #define WIFI_PASSWORD    "your-wifi-password"
    #define API_HOST         "raksha-rail.vercel.app"  // no https://, no trailing slash
    #define DEVICE_API_KEY   "same value as DEVICE_API_KEY in Vercel"
    #define DEVICE_ID        "ESP32-CAM-01"
    #define PLATFORM_NAME    "Platform 1"
-   ```
-
+```
+ 
 4. **Tools:** Board **AI Thinker ESP32-CAM** · PSRAM **Enabled** · Partition **Huge APP (3MB No OTA)**.
 5. Connect **GPIO0 → GND**, press reset, upload. Remove the jumper and press reset again.
 6. Open the **Serial Monitor at 115200 baud**. Power the board from a solid **5 V / 2 A** supply.
-
 <details>
 <summary><b>📟 Expected Serial Monitor output (click to expand)</b></summary>
-
 ```text
 === Raksha Rail ESP32-CAM ===
 Camera sensor PID: 0x2145 (GC2145)
@@ -377,11 +377,10 @@ Upload successful
 Image URL: https://res.cloudinary.com/...
 Event ID: 66e2b1f4...
 ```
-
+ 
 </details>
-
 ### 🎛️ Firmware options
-
+ 
 | `#define` | Default | Use it when |
 |---|---|---|
 | `TEST_MODE` | `1` | `1` = test uploads without Arduino (boot, every 60 s, key `c`). `0` = RFID-triggered only |
@@ -392,11 +391,11 @@ Event ID: 66e2b1f4...
 | `USE_FLASH_LED` | `0` | Dark scene → `1` (GPIO4 flash) |
 | `HEARTBEAT_INTERVAL_MS` | `30000` | How often the device reports ONLINE |
 | `UPLOAD_ATTEMPTS` | `3` | Retries for network / 5xx / 429 errors |
-
+ 
 ### 🔗 Wiring the Arduino UNO to the ESP32-CAM
-
+ 
 The reference sketch is [`firmware/arduino_uno_rfid/arduino_uno_rfid.ino`](firmware/arduino_uno_rfid/arduino_uno_rfid.ino) (libraries: **MFRC522**, **Servo**, **SoftwareSerial**).
-
+ 
 | From | To | Notes |
 |---|---|---|
 | UNO **D3** (TX) | 1 kΩ → ESP32 **GPIO13** | plus **2 kΩ from GPIO13 to GND** (5 V → 3.3 V divider) |
@@ -404,28 +403,28 @@ The reference sketch is [`firmware/arduino_uno_rfid/arduino_uno_rfid.ino`](firmw
 | UNO **GND** | ESP32 **GND** | common ground is required |
 | MFRC522 #1 / #2 | SCK 13 · MISO 12 · MOSI 11 · RST 9 · SS **10** / **8** | readers on **3.3 V** |
 | Servo signal | UNO **D6** | power the servo from a separate 5 V supply |
-
+ 
 Serial protocol, 9600 baud, one line per scan:
-
+ 
 ```text
 RFID,A1:B2:C3:D4,RFID-1
 ```
-
+ 
 > [!TIP]
 > **Flashing order:** first get `TEST_MODE 1` uploads working (proves Wi-Fi, HTTPS, camera, JPEG, cloud). Only then set
 > `TEST_MODE 0` and connect the Arduino.
-
+ 
 > [!CAUTION]
 > By default the ESP32 uses `setInsecure()`: traffic is **encrypted**, but the server certificate is **not verified**. For
 > stronger security, paste your Vercel domain's root CA certificate into `ROOT_CA_PEM` in `secrets.h`. Find it in the
 > browser padlock → certificate → top of the chain → export as PEM.
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## ⚙️ Backend API
-
+ 
+<p align="center">─────────────────<br/>「 ʙᴀᴄᴋᴇɴᴅ API 」<br/>─────────────────</p>
 All responses are JSON. Errors always look like `{ "success": false, "error": "message" }`.
-
+ 
 | Method | Path | Who can call | Purpose |
 |---|---|---|---|
 | `POST` | `/api/device/detection` | 📷 `X-Device-Key` | ESP32 image + RFID upload |
@@ -439,15 +438,14 @@ All responses are JSON. Errors always look like `{ "success": false, "error": "m
 | `PATCH` | `/api/detections/:id` | 👮 admin/officer or 🤖 `X-Analysis-Key` | Record review / AI result |
 | `GET` | `/api/dashboard/stats` | 👮 session | Real counts + device status |
 | `GET` | `/api/health` | 🌍 public | Deployment check (never shows secret values) |
-
+ 
 ### 📡 ESP32 upload API
-
+ 
 <table>
 <tr><td><b>Endpoint</b></td><td><code>POST https://&lt;your-app&gt;.vercel.app/api/device/detection</code></td></tr>
 <tr><td><b>Headers</b></td><td><code>X-Device-Key: &lt;DEVICE_API_KEY&gt;</code><br/><code>Content-Type: multipart/form-data; boundary=...</code></td></tr>
 <tr><td><b>Body</b></td><td><code>image</code> · <code>rfidUid</code> · <code>readerId</code> · <code>deviceId</code> · <code>platform</code> · optional <code>timestamp</code>, <code>wifiSignal</code></td></tr>
 </table>
-
 | Field | Required | Validation | Example |
 |---|:---:|---|---|
 | `image` | ✅ | File, **JPEG or PNG** checked by magic bytes, **128 B – 3 MB** | `captured.jpg` |
@@ -457,48 +455,46 @@ All responses are JSON. Errors always look like `{ "success": false, "error": "m
 | `platform` | ✅ | Letters, digits, spaces, `_ . -`, max 40 | `Platform 1` |
 | `timestamp` | – | ISO-8601 with `Z`/offset or epoch s/ms. If it isn't within the last 24 h, server time is used | `2026-09-12T10:15:30Z` |
 | `wifiSignal` | – | Integer dBm, −127…0 | `-62` |
-
+ 
 <details>
 <summary><b>🧾 Raw multipart request, exactly what the firmware sends (click to expand)</b></summary>
-
 ```http
 POST /api/device/detection HTTP/1.1
 Host: raksha-rail.vercel.app
 X-Device-Key: <DEVICE_API_KEY>
 Content-Type: multipart/form-data; boundary=----RakshaRail1a2b3c
-
+ 
 ------RakshaRail1a2b3c
 Content-Disposition: form-data; name="rfidUid"
-
+ 
 A1:B2:C3:D4
 ------RakshaRail1a2b3c
 Content-Disposition: form-data; name="readerId"
-
+ 
 RFID-1
 ------RakshaRail1a2b3c
 Content-Disposition: form-data; name="deviceId"
-
+ 
 ESP32-CAM-01
 ------RakshaRail1a2b3c
 Content-Disposition: form-data; name="platform"
-
+ 
 Platform 1
 ------RakshaRail1a2b3c
 Content-Disposition: form-data; name="wifiSignal"
-
+ 
 -62
 ------RakshaRail1a2b3c
 Content-Disposition: form-data; name="image"; filename="captured.jpg"
 Content-Type: image/jpeg
-
+ 
 <JPEG bytes>
 ------RakshaRail1a2b3c--
 ```
-
+ 
 </details>
-
 **✅ Success — `200`**
-
+ 
 ```json
 {
   "success": true,
@@ -510,9 +506,9 @@ Content-Type: image/jpeg
   "message": "Detection recorded successfully"
 }
 ```
-
+ 
 ### 🔍 How the server processes an upload
-
+ 
 ```mermaid
 flowchart TD
   IN(["📥 POST /api/device/detection"]) --> K{"X-Device-Key valid?"}
@@ -542,7 +538,7 @@ flowchart TD
   class OK good
   class UP,INS,DEV cloud
 ```
-
+ 
 | Status | Meaning | What to do |
 |:---:|---|---|
 | `400` | A field or the image is missing/invalid | Read `error`, e.g. `"rfidUid" is invalid (expected 4-10 hex bytes...)` |
@@ -554,17 +550,17 @@ flowchart TD
 | `429` | More than 30 uploads per minute | Wait `Retry-After` seconds |
 | `502` | Cloudinary unreachable / credentials wrong | Check `CLOUDINARY_*` variables |
 | `503` | Database unreachable | Check `MONGODB_URI` and Atlas network access |
-
+ 
 ### 💓 Heartbeat
-
+ 
 ```http
 POST https://<your-app>.vercel.app/api/device/heartbeat
 X-Device-Key: <DEVICE_API_KEY>
 Content-Type: application/json
-
+ 
 { "deviceId": "ESP32-CAM-01", "wifiSignal": -62, "ipAddress": "192.168.1.20" }
 ```
-
+ 
 ```mermaid
 stateDiagram-v2
   direction LR
@@ -573,15 +569,15 @@ stateDiagram-v2
   ONLINE --> ONLINE: heartbeat every 30 s
   ONLINE --> OFFLINE: silent for 90 s
 ```
-
+ 
 A device is **ONLINE** if anything arrived within `DEVICE_OFFLINE_AFTER_SECONDS` (default **90 s**).
-
+ 
 ### 🗂️ History & stats queries
-
+ 
 ```http
 GET /api/detections?page=1&limit=20&readerId=RFID-1&rfidUid=A1:B2:C3:D4&platform=Platform%201&deviceId=ESP32-CAM-01&threatStatus=PENDING&fromDate=2026-09-01&toDate=2026-09-12
 ```
-
+ 
 | Parameter | Rule |
 |---|---|
 | `page` | ≥ 1 (default 1) |
@@ -589,11 +585,11 @@ GET /api/detections?page=1&limit=20&readerId=RFID-1&rfidUid=A1:B2:C3:D4&platform
 | `readerId` · `rfidUid` · `platform` · `deviceId` | Exact match (RFID UID is normalized) |
 | `threatStatus` | `PENDING` · `CLEAR` · `SUSPICIOUS` · `THREAT` |
 | `fromDate` · `toDate` | `YYYY-MM-DD` (a whole day in `APP_TIMEZONE`) or a full ISO timestamp |
-
+ 
 The response is `{ page, limit, total, totalPages, items: [...] }`.
-
+ 
 `GET /api/dashboard/stats` returns real values only, and zeros when nothing exists:
-
+ 
 ```json
 {
   "totalDetections": 25,
@@ -609,11 +605,11 @@ The response is `{ page, limit, total, totalPages, items: [...] }`.
   "aiAnalysis": "NOT_INTEGRATED"
 }
 ```
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🔐 Authentication & sessions
-
+ 
+<p align="center">───────────────────────────────<br/>「 ᴀᴜᴛʜᴇɴᴛɪᴄᴀᴛɪᴏɴ & sᴇssɪᴏɴs 」<br/>───────────────────────────────</p>
 ```mermaid
 sequenceDiagram
   autonumber
@@ -639,27 +635,27 @@ sequenceDiagram
     L-->>P: 429 Retry-After
   end
 ```
-
+ 
 | Role | View dashboard & camera | Record review (`PATCH`) | Typical user |
 |---|:---:|:---:|---|
 | `admin` | ✅ | ✅ | Project lead |
 | `officer` | ✅ | ✅ | RPF / security officer |
 | `operator` | ✅ | ❌ | Control-room viewer |
-
+ 
 | Page | Access |
 |---|---|
 | `index.html` (login) | 🌍 Public |
 | `page2.html` (dashboard) | 🔒 Login required |
 | `page3.html` (camera monitor) | 🔒 Login required |
 | `/api/device/*` | 🔑 Device key required |
-
+ 
 **Session rules:** the JWT lasts 12 h by default (`SESSION_HOURS`). Ticking **Remember me** keeps you signed in for 7 days. Login is limited to 10
 attempts per ID and 30 per IP address in 15 minutes.
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 📺 Live dashboard updates
-
+ 
+<p align="center">────────────────────────────<br/>「 ʟɪᴠᴇ ᴅᴀsʜʙᴏᴀʀᴅ ᴜᴘᴅᴀᴛᴇs 」<br/>────────────────────────────</p>
 ```mermaid
 flowchart LR
   T(["⏱️ Every 3 s<br/>tab visible"]) --> Q["GET /api/detections/latest"]
@@ -675,16 +671,15 @@ flowchart LR
   classDef hot fill:#7c2d12,stroke:#fb923c,color:#fff
   class U,H,S,A hot
 ```
-
+ 
 - **page3.html** polls `/api/detections/latest` every **3 s** and `/api/dashboard/stats` every **10 s**.
 - **page2.html** polls `/api/dashboard/stats` every **5 s**.
 - Polling **pauses automatically** when the tab is hidden, and page3 has a **⛔ Pause Live Updates** button.
 - WebSockets aren't needed: polling is simpler and very reliable for a hackathon demo.
-
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🗃️ Data model
-
+ 
+<p align="center">────────────────<br/>「 ᴅᴀᴛᴀ ᴍᴏᴅᴇʟ 」<br/>────────────────</p>
 ```mermaid
 erDiagram
   USERS {
@@ -732,14 +727,13 @@ erDiagram
   DEVICES ||--o{ DETECTIONS : captures
   USERS ||--o{ DETECTIONS : reviews
 ```
-
+ 
 > [!NOTE]
 > **Images are never stored in MongoDB**, only `imageUrl` and `imagePublicId`. The bytes live in Cloudinary. Indexes
 > (unique usernames/device IDs, time-sorted detections, TTL for rate limits) are created automatically on first connection.
-
+ 
 <details>
 <summary><b>📄 Example detection document (click to expand)</b></summary>
-
 ```json
 {
   "_id": "66e2b1f4c9a1d2e3f4a5b6c7",
@@ -759,13 +753,12 @@ erDiagram
   "createdAt": "2026-09-12T10:15:31.204Z"
 }
 ```
-
+ 
 </details>
-
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🤖 Threat analysis & future AI
-
+ 
+<p align="center">─────────────────────────────────<br/>「 ᴛʜʀᴇᴀᴛ ᴀɴᴀʟʏsɪs & ғᴜᴛᴜʀᴇ AI 」<br/>─────────────────────────────────</p>
 ```mermaid
 stateDiagram-v2
   direction LR
@@ -777,18 +770,18 @@ stateDiagram-v2
   SUSPICIOUS --> CLEAR: dismissed
   CLEAR --> PENDING: re-review
 ```
-
+ 
 | `threatStatus` | Dashboard shows | Set by |
 |---|---|---|
 | `PENDING` | 🟠 **PENDING · NOT ANALYZED** | Automatically on every upload |
 | `CLEAR` | 🟢 LOW / SAFE | AI service or admin/officer |
 | `SUSPICIOUS` | 🟠 ELEVATED + frame highlight | AI service or admin/officer |
 | `THREAT` | 🔴 HIGH + frame highlight | AI service or admin/officer |
-
+ 
 `detectionType`: `UNKNOWN` · `NONE` · `NARCOTICS` · `EXPLOSIVE` · `WEAPON` · `OTHER` · `confidence`: `0.0–1.0` or `null`
-
+ 
 ### 🔌 Plugging in an AI model later
-
+ 
 ```mermaid
 sequenceDiagram
   autonumber
@@ -804,32 +797,30 @@ sequenceDiagram
   WEB->>API: Next poll
   API-->>WEB: Updated status → badge + frame highlight
 ```
-
+ 
 1. Set `ANALYSIS_WEBHOOK_URL` and `ANALYSIS_API_KEY` in Vercel and redeploy.
 2. Every new detection is POSTed to your service:
    `{ eventId, imageUrl, rfidUid, readerId, platform, deviceId, timestamp, callbackUrl }` with header `X-Analysis-Key`.
 3. Your service reports the result:
-
-   ```http
+```http
    PATCH https://<your-app>.vercel.app/api/detections/<eventId>
    X-Analysis-Key: <ANALYSIS_API_KEY>
    Content-Type: application/json
-
+ 
    { "threatStatus": "CLEAR", "detectionType": "NONE", "confidence": 0.93, "model": "yolo-custom-v1" }
-   ```
-
+```
+ 
 4. The dashboard shows the result on its next poll. Officers can record a manual review with the same `PATCH` while logged in.
-
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🔧 Environment variables
-
+ 
+<p align="center">───────────────────────────<br/>「 ᴇɴᴠɪʀᴏɴᴍᴇɴᴛ ᴠᴀʀɪᴀʙʟᴇs 」<br/>───────────────────────────</p>
 Set these in **Vercel → Project → Settings → Environment Variables**. For local runs, put them in `.env`
 (git-ignored). [`.env.example`](.env.example) lists every variable with placeholders.
-
+ 
 > [!IMPORTANT]
 > **After changing any environment variable in Vercel, redeploy.** Running deployments don't pick up new values.
-
+ 
 | Variable | Required | Description |
 |---|:---:|---|
 | `MONGODB_URI` | ✅ | Atlas `mongodb+srv://...` connection string |
@@ -849,17 +840,17 @@ Set these in **Vercel → Project → Settings → Environment Variables**. For 
 | `APP_TIMEZONE` | – | For "detections today" (default `Asia/Kolkata`) |
 | `TELEGRAM_BOT_TOKEN` · `TELEGRAM_CHAT_ID` | – | Optional Telegram alerts |
 | `ANALYSIS_WEBHOOK_URL` · `ANALYSIS_API_KEY` | – | Optional future AI service |
-
+ 
 🎲 **Generate strong secrets** (run once for `JWT_SECRET`, once for `DEVICE_API_KEY`):
-
+ 
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## ⚡ Quick start: run it locally in 2 minutes
-
+ 
+<p align="center">────────────────────────────<br/>「 ǫᴜɪᴄᴋ sᴛᴀʀᴛ: ʟᴏᴄᴀʟ ʀᴜɴ 」<br/>────────────────────────────</p>
 ```mermaid
 flowchart TD
   S(["💻 npm run dev"]) --> Q{".env contains MONGODB_URI<br/>and all CLOUDINARY_ keys?"}
@@ -872,37 +863,37 @@ flowchart TD
   class D demo
   class C cloud
 ```
-
+ 
 **Requirements:** [Node.js 24](https://nodejs.org) and Git.
-
+ 
 ```bash
 git clone https://github.com/<you>/raksha-rail.git
 cd raksha-rail
 npm install
 npm run dev
 ```
-
+ 
 Open **http://localhost:3000** and log in:
-
+ 
 | Mode | Login | Device key |
 |---|---|---|
 | 🧪 Demo (no `.env`) | `admin` / `Admin-Demo-123` | `local-demo-device-key` |
 | ☁️ Cloud (`.env` filled) | your `BOOTSTRAP_ADMIN_*` user | your `DEVICE_API_KEY` |
-
+ 
 📸 **Watch a live update:** keep `page3.html` open and, in a second terminal, run:
-
+ 
 ```bash
 npm run test-upload -- --url http://localhost:3000 --key local-demo-device-key --rfid 04:A3:2B:1C --reader RFID-2
 ```
-
+ 
 > [!NOTE]
 > - Demo mode keeps data **in memory** and loses it when you stop the server. The first run downloads a MongoDB binary (~780 MB, cached afterwards).
 > - `npm run dev` is **only for development**. The ESP32 and the public use the Vercel deployment, never localhost.
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## ☁️ Deploy to the public internet
-
+ 
+<p align="center">───────────────────────────────────<br/>「 ᴅᴇᴘʟᴏʏ ᴛᴏ ᴛʜᴇ ᴘᴜʙʟɪᴄ ɪɴᴛᴇʀɴᴇᴛ 」<br/>───────────────────────────────────</p>
 ```mermaid
 flowchart LR
   A["1️⃣ GitHub<br/>repository"] --> B["2️⃣ MongoDB Atlas<br/>cluster + user"]
@@ -919,12 +910,11 @@ flowchart LR
   class A,B,C,D,E,F,G,H,I step
   class J done
 ```
-
+ 
 ### 🍃 Step A: MongoDB Atlas
-
+ 
 <details open>
 <summary><b>Create the database (free M0 cluster)</b></summary>
-
 1. Sign up at **https://www.mongodb.com/cloud/atlas/register**.
 2. **Create a cluster:** choose the **Free (M0)** tier.
    Pick a region **close to your Vercel function region**. For India: **AWS Mumbai (ap-south-1)** plus Vercel region **Mumbai (bom1)**.
@@ -934,21 +924,19 @@ flowchart LR
 4. **Network access:** *IP Access List → Add IP Address* → **Allow access from anywhere `0.0.0.0/0`** → Confirm.
    > Vercel functions have no fixed IP address, so this is required on the free tier. The strong password protects access.
 5. **Connection string:** *Clusters → Connect → Drivers → Node.js* → copy:
-   ```text
+```text
    mongodb+srv://raksha_app:<db_password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-   ```
+```
    Replace `<db_password>`. If the password contains `@ : / ? # [ ] %`, **URL-encode** those characters.
 6. Save it as `MONGODB_URI` in Vercel (step C).
 7. **Test:** after deploying, `https://<your-app>.vercel.app/api/health` must show `"database": "connected"`.
    After the first login/upload, *Browse Collections* shows the **raksha_rail** database with `users`, `detections`, `devices`.
-
+ 
 </details>
-
 ### 🖼️ Step B: Cloudinary
-
+ 
 <details open>
 <summary><b>Get your image-storage credentials (free plan)</b></summary>
-
 1. Sign up at **https://cloudinary.com/users/register_free**.
 2. Open the **Console → Settings → API Keys** (also shown on the Dashboard).
 3. Copy **Cloud name**, **API Key**, **API Secret**.
@@ -956,17 +944,14 @@ flowchart LR
    The secret is only used inside `lib/cloudinary.js` on the server. Browsers and the ESP32 never see it.
 5. **Test:** run the simulated upload ([Testing](#-testing--verification)), then open
    **Media Library → Folders → `raksha-rail/detections`**. The image is there, tagged with the device and reader IDs.
-
 </details>
-
 ### ▲ Step C: Vercel
-
+ 
 <details open>
 <summary><b>The 13 deployment steps</b></summary>
-
 1. **Create a GitHub repository** at https://github.com/new (e.g. `raksha-rail`) without a README.
 2. **Upload the project:**
-   ```bash
+```bash
    git init
    git add .
    git status          # make sure .env and secrets.h are NOT listed
@@ -974,7 +959,7 @@ flowchart LR
    git branch -M main
    git remote add origin https://github.com/<you>/raksha-rail.git
    git push -u origin main
-   ```
+```
 3. **Create a Vercel account** at https://vercel.com/signup → *Continue with GitHub*.
 4. **Import:** *Add New… → Project* → select `raksha-rail` → *Import*. Name it `raksha-rail` to get `raksha-rail.vercel.app` if it's free.
 5. **Build settings:** Framework Preset **Other**. Leave Build Command empty. `vercel.json` already sets `outputDirectory: public`, and `package.json` sets Node 24.
@@ -987,15 +972,13 @@ flowchart LR
     Then **delete `BOOTSTRAP_ADMIN_PASSWORD`** in Vercel (the account stays) and redeploy.
 12. **Test dashboard + upload:** run `npm run test-upload` against the public URL. page3 updates within ~3 s.
 13. **Test the ESP32:** set `API_HOST` in `secrets.h`, flash, and watch for `HTTP response: 200`.
-
 </details>
-
 > [!WARNING]
 > Use the **production** domain (`raksha-rail.vercel.app`) for the ESP32. Preview URLs
 > (`raksha-rail-git-...vercel.app`) sit behind Vercel Deployment Protection and will reject the device with a login page.
-
+ 
 ### 👥 Step D: Add more users
-
+ 
 ```bash
 npm install
 # .env with MONGODB_URI=...  (git-ignored)
@@ -1003,31 +986,30 @@ npm run create-user -- --username rpf-officer1 --role officer --email officer1@e
 npm run create-user -- --username operator1 --role operator
 npm run create-user -- --username rpf-officer1 --reset-password
 ```
-
+ 
 A strong password is generated and printed once (or pass `--password "..."`).
-
+ 
 ### ✈️ Step E: Telegram alerts (optional)
-
+ 
 1. In Telegram, message **@BotFather** → `/newbot` → follow the prompts → copy the **bot token**.
 2. Send any message to your new bot (or add it to a group).
 3. Open `https://api.telegram.org/bot<TOKEN>/getUpdates` and copy `chat.id` (group IDs start with `-`).
 4. Add `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` in Vercel → redeploy.
 5. Every new detection now sends the photo, RFID UID, reader, platform, device and threat status. If Telegram fails, the upload still succeeds.
-
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🧪 Testing & verification
-
+ 
+<p align="center">────────────────────────────<br/>「 ᴛᴇsᴛɪɴɢ & ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ 」<br/>────────────────────────────</p>
 ### 1️⃣ Without hardware: prove Vercel → Cloudinary → MongoDB → dashboard
-
+ 
 ```bash
 npm install
 npm run test-upload -- --url https://<your-app>.vercel.app --key <DEVICE_API_KEY>
 # options: --image photo.jpg --rfid 04:A3:2B:1C --reader RFID-2 --platform "Platform 3" --device ESP32-CAM-01
 ```
-
+ 
 Or use plain **curl** (on Windows PowerShell type `curl.exe`):
-
+ 
 ```bash
 curl -X POST https://<your-app>.vercel.app/api/device/detection \
   -H "X-Device-Key: <DEVICE_API_KEY>" \
@@ -1035,17 +1017,16 @@ curl -X POST https://<your-app>.vercel.app/api/device/detection \
   -F "rfidUid=A1:B2:C3:D4" -F "readerId=RFID-1" \
   -F "deviceId=ESP32-CAM-01" -F "platform=Platform 1"
 ```
-
+ 
 ✅ Expected: `HTTP 200` with `"success": true`, and the image appears on the open page3 **within ~3 s without refreshing**.
-
+ 
 ### 2️⃣ With the ESP32-CAM
-
+ 
 1. Flash with `TEST_MODE 1` → Serial Monitor shows `HTTP response: 200` and `Upload successful`.
 2. Type `c` + Enter for another capture.
 3. Set `TEST_MODE 0`, wire the Arduino UNO, scan real tags on **RFID-1** and **RFID-2**.
-
 ### 3️⃣ Verify every hop
-
+ 
 ```mermaid
 flowchart LR
   S["📟 Serial Monitor<br/>HTTP response: 200"] --> V["▲ Vercel Logs<br/>POST detection 200"]
@@ -1057,7 +1038,7 @@ flowchart LR
   classDef ok fill:#14532d,stroke:#4ade80,color:#fff
   class P ok
 ```
-
+ 
 | # | Hop | Where to look | ✅ Proof |
 |:---:|---|---|---|
 | 1 | ESP32 → Vercel | Serial Monitor | `HTTP response: 200`, an `eventId` and `imageUrl` |
@@ -1067,11 +1048,11 @@ flowchart LR
 | 5 | Device status | `raksha_rail.devices` | `ESP32-CAM-01`, `status: "ONLINE"`, fresh `lastSeen` |
 | 6 | Dashboard | `/page3.html` | Same image + RFID data within ~3 s, new history row, page2 counts increase |
 | 7 | Cloud-only | Switch the laptop **off**, open the URL on a phone | Everything is still there 🎉 |
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🔒 Security
-
+ 
+<p align="center">──────────────<br/>「 sᴇᴄᴜʀɪᴛʏ 」<br/>──────────────</p>
 ```mermaid
 flowchart TB
   subgraph BROWSER["🌐 Browser"]
@@ -1099,7 +1080,7 @@ flowchart TB
   classDef box fill:#0f172a,stroke:#38bdf8,color:#e2e8f0
   class B1,B2,D1,D2,A1,A2,A3,A4,S1,S2,S3 box
 ```
-
+ 
 | Protection | How |
 |---|---|
 | 🔑 Passwords | bcrypt cost 12, never stored or logged in plaintext. Response timing doesn't reveal whether an ID exists |
@@ -1112,9 +1093,9 @@ flowchart TB
 | 🧱 Headers | `vercel.json`: CSP, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` |
 | 🗝️ Secrets | Only in Vercel env vars. `/api/health` reports only *configured / not configured* |
 | 🌍 CORS | None needed: the website and API share one origin, and the ESP32 isn't a browser |
-
+ 
 ### 🔄 If a device key leaks or a board is lost
-
+ 
 ```mermaid
 flowchart LR
   A["🚨 Key leaked or<br/>board lost"] --> B["🎲 Generate a<br/>new random key"]
@@ -1128,18 +1109,17 @@ flowchart LR
   class A alert
   class G done
 ```
-
+ 
 > [!TIP]
 > Use `DEVICE_KEYS` so each board has **its own key**. A stolen key can't impersonate other devices, and you can replace
 > one board's key without re-flashing the rest. Rotating `JWT_SECRET` signs everyone out.
-
+ 
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🛟 Troubleshooting
-
+ 
+<p align="center">─────────────────────<br/>「 ᴛʀᴏᴜʙʟᴇsʜᴏᴏᴛɪɴɢ 」<br/>─────────────────────</p>
 <details>
 <summary><b>☁️ Deployment & cloud</b></summary>
-
 | Symptom | Fix |
 |---|---|
 | `/api/health` shows `not_configured` | Add the missing variable in Vercel → **redeploy** |
@@ -1147,12 +1127,10 @@ flowchart LR
 | Upload returns `502` | Wrong `CLOUDINARY_*` values; check for extra spaces |
 | `500 Server is not configured: JWT_SECRET...` | `JWT_SECRET` must be at least 32 characters |
 | Slow responses | Vercel function region and Atlas region should match (e.g. both Mumbai) |
-
+ 
 </details>
-
 <details>
 <summary><b>🔐 Login & dashboard</b></summary>
-
 | Symptom | Fix |
 |---|---|
 | Can't log in on first deploy | `BOOTSTRAP_ADMIN_USERNAME` and `BOOTSTRAP_ADMIN_PASSWORD` (10+ chars) must be set **before** the first login attempt |
@@ -1160,12 +1138,10 @@ flowchart LR
 | Redirected back to login | Session expired (12 h) or you logged out; log in again |
 | page3 shows **RECONNECTING** | Internet connection dropped; it recovers automatically |
 | Camera shows **OFFLINE** | No heartbeat/upload for 90 s: check the ESP32's power and Wi-Fi |
-
+ 
 </details>
-
 <details>
 <summary><b>📷 ESP32-CAM</b></summary>
-
 | Symptom | Fix |
 |---|---|
 | `HTTP response: 401` `Invalid device key` | Key mismatch or stray spaces; redeploy after changing it in Vercel |
@@ -1176,25 +1152,22 @@ flowchart LR
 | Image upside down / mirrored | `FLIP_VERTICAL 1` / `MIRROR_HORIZONTAL 1` |
 | `Brownout detector was triggered` | Use a 5 V / 2 A supply with short, thick wires |
 | `JPEG conversion failed` | PSRAM not enabled, or out of memory |
-
+ 
 </details>
-
 <details>
 <summary><b>🧠 Arduino UNO</b></summary>
-
 | Symptom | Fix |
 |---|---|
 | ESP32 never receives the trigger | UNO D3 → divider → GPIO13, common GND, both at 9600 baud |
 | `PCD_DumpVersionToSerial` shows `0x00` | Reader wiring/SS pin wrong or reader not on 3.3 V |
 | Same tag triggers repeatedly | That's expected after 5 s; raise `SAME_TAG_COOLDOWN_MS` |
 | Blurry photos | Increase the servo settle delay (`delay(700)`) |
-
+ 
 </details>
-
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ## 🏁 Hackathon status
-
+ 
+<p align="center">──────────────────────<br/>「 ʜᴀᴄᴋᴀᴛʜᴏɴ sᴛᴀᴛᴜs 」<br/>──────────────────────</p>
 | # | Priority | Status |
 |:---:|---|---|
 | 1 | Public Vercel deployment | ✅ Ready (`vercel.json`, Node 24, 10 functions) |
@@ -1208,13 +1181,12 @@ flowchart LR
 | 9 | Device online status | ✅ Heartbeat + 90 s offline rule |
 | 10 | Telegram | ✅ Optional, never blocks uploads |
 | 11 | AI threat detection | 🟡 Architecture + webhook ready, **model not integrated** |
-
+ 
 <div align="center">
-
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
-
 ### 🛡️ Raksha Rail: safer journeys, one scan at a time 🚆
-
+ 
 **RFID** ▸ **ESP32-CAM** ▸ **Vercel** ▸ **Cloudinary** + **MongoDB Atlas** ▸ **Live Dashboard**
-
+ 
 </div>
+ 
