@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raksha Rail - Threat Monitor</title>
+    <script>document.documentElement.classList.add("auth-pending");</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #eef3f8; color: #172033; }
+
+        header {
+            height: 75px;
+            background: linear-gradient(90deg, #062f52, #075985, #0b6b8e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .logo { display: flex; align-items: center; gap: 14px; }
+        .logo-circle { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; }
+        .logo h2 { font-size: 20px; }
+        .logo p { font-size: 11px; opacity: 0.8; margin-top: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 15px; }
+        .nav-btn {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .logout-btn { background: #c62828; }
+        .logout-btn:hover { background: #b71c1c; }
+
+        .main { max-width: 1250px; margin: 25px auto; padding: 0 20px; }
+        .page-title { margin-bottom: 20px; }
+        .page-title h1 { font-size: 28px; color: #123b59; }
+        .page-title p { margin-top: 5px; color: #64748b; }
+
+        .info-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
+        .info-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 5px 18px rgba(0,0,0,0.08); border-left: 5px solid #087ea4; }
+        .info-card .icon { font-size: 27px; margin-bottom: 10px; }
+        .info-card h3 { font-size: 14px; color: #64748b; margin-bottom: 6px; }
+        .info-card strong { font-size: 18px; color: #123b59; }
+
+        .grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; }
+        .panel { background: white; border-radius: 18px; padding: 22px; box-shadow: 0 6px 22px rgba(0,0,0,0.08); }
+        .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+        .panel-header h2 { font-size: 20px; color: #123b59; }
+
+        .camera-box { position: relative; width: 100%; height: 380px; background: #071923; border-radius: 14px; overflow: hidden; }
+        .camera-box img { width: 100%; height: 100%; object-fit: contain; display: none; }
+        .camera-overlay { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; pointer-events: none; }
+        .live { background: #c62828; color: white; padding: 7px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; }
+        .camera-time { background: rgba(0,0,0,0.6); color: white; padding: 7px 12px; border-radius: 6px; font-size: 12px; }
+
+        .detection-box { position: absolute; width: calc(100% - 30px); height: calc(100% - 75px); border: 3px solid #21d66b; border-radius: 8px; left: 15px; top: 60px; display: none; pointer-events: none; }
+        .detection-label { position: absolute; top: -28px; left: -3px; background: #21d66b; color: #062f20; padding: 5px 9px; font-size: 11px; font-weight: bold; border-radius: 5px 5px 0 0; }
+
+        .camera-buttons { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        button { border: none; border-radius: 8px; padding: 12px 18px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        button:hover { transform: translateY(-2px); }
+        .start-btn { background: #087ea4; color: white; }
+        .capture-btn { background: #e86f00; color: white; }
+        .stop-btn { background: #c62828; color: white; }
+
+        .detection-data { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .data-box { background: #f1f6f9; padding: 15px; border-radius: 10px; }
+        .data-box span { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; }
+        .data-box strong { color: #123b59; word-break: break-word; }
+
+        .location-card { background: linear-gradient(135deg, #e7f5fa, #f7fbfd); padding: 20px; border-radius: 14px; margin-bottom: 15px; }
+        .location-icon { font-size: 40px; margin-bottom: 10px; }
+        .location-card h3 { color: #075985; margin-bottom: 8px; }
+        .location-card p { color: #64748b; line-height: 1.5; font-size: 13px; }
+
+        select { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ccd7df; border-radius: 8px; background: white; font-size: 14px; }
+
+        .gps { margin-top: 15px; background: white; border: 1px solid #dce5eb; border-radius: 12px; padding: 15px; }
+        .gps-row { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid #edf1f4; font-size: 13px; }
+        .gps-row:last-child { border-bottom: none; }
+        .gps-row span { color: #64748b; white-space: nowrap; }
+        .gps-row strong { text-align: right; }
+
+        .safety { margin-top: 20px; padding: 20px; border-radius: 15px; background: linear-gradient(135deg, #075985, #0f766e); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .safety h2 { margin-bottom: 7px; }
+        .safety p { color: #dff6ff; font-size: 14px; }
+        .safety-status { background: #31b65b; padding: 10px 18px; border-radius: 20px; font-weight: bold; }
+
+        .alert { position: fixed; right: 20px; bottom: 20px; background: #123b59; color: white; padding: 15px 20px; border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.25); display: none; z-index: 999; }
+
+        /* ---- Live cloud data ---- */
+        .auth-pending body { visibility: hidden; }
+        .user-chip { color: #e2e8f0; font-size: 13px; }
+        .live.paused { background: #64748b; }
+        .live.offline { background: #475569; }
+        .camera-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; color: #9fb6c4; text-align: center; font-size: 14px; }
+        .camera-placeholder .big { font-size: 48px; }
+        .safety-status.pending { background: #b45309; }
+        .safety-status.danger { background: #c62828; }
+        .safety-status.idle { background: #64748b; }
+
+        .history { margin-top: 20px; }
+        .history-filters { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr auto; gap: 10px; margin-bottom: 15px; }
+        .history-filters input, .history-filters select { width: 100%; margin-top: 0; padding: 10px 12px; border: 1px solid #ccd7df; border-radius: 8px; background: white; font-size: 13px; }
+        .table-wrap { overflow-x: auto; }
+        .history table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .history th { text-align: left; color: #64748b; padding: 10px; border-bottom: 2px solid #edf1f4; white-space: nowrap; }
+        .history td { padding: 10px; border-bottom: 1px solid #edf1f4; color: #123b59; vertical-align: middle; white-space: nowrap; }
+        .history td img { width: 80px; height: 60px; object-fit: cover; border-radius: 6px; border: 2px solid #087ea4; display: block; cursor: pointer; }
+        .history tr.new-row { background: #fff7ed; }
+        .history .empty-row td { text-align: center; color: #64748b; padding: 25px; white-space: normal; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; color: white; }
+        .pager { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; font-size: 13px; color: #64748b; }
+        .pager button { padding: 8px 14px; background: #087ea4; color: white; }
+        .pager button:disabled { background: #cbd5e1; cursor: not-allowed; transform: none; }
+
+        @media(max-width: 900px) {
+            .info-cards { grid-template-columns: 1fr 1fr; }
+            .grid { grid-template-columns: 1fr; }
+            .history-filters { grid-template-columns: 1fr 1fr; }
+            .user-chip { display: none; }
+        }
+        @media(max-width: 600px) {
+            header { padding: 0 15px; }
+            .info-cards { grid-template-columns: 1fr; }
+            .camera-box { height: 280px; }
+            .safety { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .history-filters { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-circle">🛡️</div>
+        <div>
+            <h2>RAKSHA RAIL</h2>
+            <p>Detection & Location Monitor</p>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <span class="user-chip" id="userChip"></span>
+        <a href="page2.html" class="nav-btn">🏠 Dashboard</a>
+        <a href="index.html" class="nav-btn logout-btn" onclick="RakshaApi.logout(event)">🚪 Logout</a>
+    </div>
+</header>
+
+<div class="main">
+    <div class="page-title">
+        <h1>📷 Camera & Threat Detection</h1>
+        <p>Real-time visual monitoring for contraband detection, baggage inspection, and platform tracking.</p>
+    </div>
+
+    <div class="info-cards">
+        <div class="info-card">
+            <div class="icon">📷</div>
+            <h3>Camera</h3>
+            <strong id="cameraStatus">CHECKING...</strong>
+        </div>
+        <div class="info-card">
+            <div class="icon">🧳</div>
+            <h3>Baggage Scan</h3>
+            <strong id="scanStatus">--</strong>
+        </div>
+        <div class="info-card">
+            <div class="icon">🚉</div>
+            <h3>Platform</h3>
+            <strong id="platformTop">--</strong>
+        </div>
+        <div class="info-card">
+            <div class="icon">🛡️</div>
+            <h3>Threat Level</h3>
+            <strong id="threatLevel">--</strong>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📹 Live Scanning Feed</h2>
+                <span class="live" id="liveBadge">LIVE</span>
+            </div>
+
+            <div class="camera-box">
+                <img id="latestImage" alt="Latest ESP32-CAM capture">
+                <div class="camera-placeholder" id="cameraPlaceholder">
+                    <div class="big">📷</div>
+                    <div id="placeholderText">Connecting to Raksha Rail cloud...</div>
+                </div>
+                <div class="camera-overlay">
+                    <div class="live" id="deviceLabel">● CAMERA</div>
+                    <div class="camera-time" id="time">00:00:00</div>
+                </div>
+                <div class="detection-box" id="detectionBox">
+                    <div class="detection-label" id="detectionLabel">FLAGGED</div>
+                </div>
+            </div>
+
+            <div class="camera-buttons">
+                <button class="start-btn" onclick="refreshNow()">🔄 Refresh Now</button>
+                <button class="capture-btn" onclick="openFullImage()">📸 Open Full Image</button>
+                <button class="stop-btn" id="pauseBtn" onclick="togglePolling()">⛔ Pause Live Updates</button>
+            </div>
+
+            <div class="detection-data">
+                <div class="data-box"><span>RFID UID</span><strong id="rfidUid">Waiting...</strong></div>
+                <div class="data-box"><span>RFID Reader</span><strong id="readerId">--</strong></div>
+                <div class="data-box"><span>Device ID</span><strong id="deviceId">--</strong></div>
+                <div class="data-box"><span>Time Log</span><strong id="detectTime">--</strong></div>
+                <div class="data-box"><span>Threat Status</span><strong id="threatStatus">--</strong></div>
+                <div class="data-box"><span>Detection Type · Confidence</span><strong id="confidence">--</strong></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📍 Railway Location</h2>
+            </div>
+
+            <div class="location-card">
+                <div class="location-icon">🚉</div>
+                <h3>Station & Platform Tracker</h3>
+                <p>Select a platform to filter the detection history.</p>
+                <select id="platform" onchange="changePlatform()">
+                    <option value="">All Platforms</option>
+                    <option value="Platform 1">Platform 1</option>
+                    <option value="Platform 2">Platform 2</option>
+                    <option value="Platform 3">Platform 3</option>
+                    <option value="Platform 4">Platform 4</option>
+                    <option value="Platform 5">Platform 5</option>
+                </select>
+            </div>
+
+            <div class="gps">
+                <div class="gps-row"><span>📍 Latitude</span><strong id="latitude">Detecting...</strong></div>
+                <div class="gps-row"><span>📍 Longitude</span><strong id="longitude">Detecting...</strong></div>
+                <div class="gps-row"><span>🚉 Platform</span><strong id="platformData">--</strong></div>
+                <div class="gps-row"><span>📡 GPS Status</span><strong id="gpsStatus">Waiting</strong></div>
+            </div>
+
+            <div class="gps">
+                <div class="gps-row"><span>📷 Device</span><strong id="deviceName">--</strong></div>
+                <div class="gps-row"><span>📶 Wi-Fi Signal</span><strong id="wifiSignal">--</strong></div>
+                <div class="gps-row"><span>🌐 Device IP</span><strong id="deviceIp">--</strong></div>
+                <div class="gps-row"><span>💓 Last Seen</span><strong id="lastSeen">--</strong></div>
+            </div>
+
+            <button class="start-btn" style="width:100%; margin-top:15px;" onclick="getLocation()">📍 Detect GPS Coordinates</button>
+        </div>
+    </div>
+
+    <div class="panel history">
+        <div class="panel-header">
+            <h2>🗂️ Detection History</h2>
+            <span class="camera-time" style="background:#123b59;" id="historyCount">-- records</span>
+        </div>
+
+        <div class="history-filters">
+            <input type="text" id="filterRfid" placeholder="RFID UID e.g. A1:B2:C3:D4">
+            <select id="filterReader">
+                <option value="">All Readers</option>
+                <option value="RFID-1">RFID-1</option>
+                <option value="RFID-2">RFID-2</option>
+            </select>
+            <input type="date" id="filterFrom" title="From date">
+            <input type="date" id="filterTo" title="To date">
+            <button class="start-btn" onclick="applyFilters()">🔍 Filter</button>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>Image</th><th>Time</th><th>RFID UID</th><th>Reader</th><th>Platform</th><th>Device</th><th>Threat Status</th></tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr class="empty-row"><td colspan="7">Loading detection history...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pager">
+            <button id="prevPage" onclick="changePage(-1)" disabled>← Previous</button>
+            <span id="pageInfo">Page 1 of 1</span>
+            <button id="nextPage" onclick="changePage(1)" disabled>Next →</button>
+        </div>
+    </div>
+
+    <div class="safety">
+        <div>
+            <h2>🛡️ Priority Threat Monitoring</h2>
+            <p>All ESP32-CAM captures and RFID metadata are synced to the Raksha Rail cloud (MongoDB Atlas + Cloudinary).</p>
+        </div>
+        <div class="safety-status idle" id="systemStatus">● LOADING...</div>
+    </div>
+</div>
+
+<div class="alert" id="alert">Camera Detection Updated</div>
+
+<script src="js/raksha-api.js"></script>
+<script>
+const LATEST_POLL_MS = 3000;   // new ESP32 uploads appear within ~3 seconds
+const STATS_POLL_MS = 10000;
+const HISTORY_LIMIT = 10;
+const THREAT_LEVELS = {
+    PENDING: { text: "PENDING", color: "#b45309" },
+    CLEAR: { text: "LOW / SAFE", color: "#16a34a" },
+    SUSPICIOUS: { text: "ELEVATED", color: "#e86f00" },
+    THREAT: { text: "HIGH", color: "#c62828" }
+};
+
+let latest = null;
+let lastEventId;              // undefined until the first successful poll
+let lastSignature = "";
+let historyPage = 1;
+let latestPoller = null;
+let statsPoller = null;
+let connectionOk = true;
+
+function setText(id, value) {
+    document.getElementById(id).innerText = (value === null || value === undefined || value === "") ? "--" : value;
+}
+
+function setStatusText(id, text, color) {
+    const el = document.getElementById(id);
+    el.innerText = text;
+    el.style.color = color;
+}
+
+// ---------------- Latest detection ----------------
+
+function renderLatest(d) {
+    latest = d;
+    const img = document.getElementById("latestImage");
+    const placeholder = document.getElementById("cameraPlaceholder");
+    const placeholderText = document.getElementById("placeholderText");
+    const box = document.getElementById("detectionBox");
+
+    if (!d) {
+        img.style.display = "none";
+        img.removeAttribute("src");
+        placeholder.style.display = "flex";
+        placeholderText.innerText = "Waiting for the first RFID-triggered ESP32-CAM capture...";
+        document.getElementById("rfidUid").innerText = "Waiting...";
+        ["readerId", "deviceId", "detectTime", "threatStatus", "confidence", "platformTop", "platformData"].forEach(function(id) { setText(id, null); });
+        setStatusText("scanStatus", "NO CAPTURES", "#123b59");
+        setStatusText("threatLevel", "--", "#123b59");
+        box.style.display = "none";
+        return;
+    }
+
+    if (img.getAttribute("src") !== d.imageUrl) {
+        placeholderText.innerText = "Loading image from cloud...";
+        img.onload = function() { img.style.display = "block"; placeholder.style.display = "none"; };
+        img.onerror = function() {
+            img.style.display = "none";
+            placeholder.style.display = "flex";
+            placeholderText.innerText = "⚠️ Image could not be loaded from Cloudinary";
+        };
+        img.src = d.imageUrl;
+    }
+
+    setText("rfidUid", d.rfidUid);
+    setText("readerId", d.readerId);
+    setText("deviceId", d.deviceId);
+    setText("detectTime", RakshaApi.formatDateTime(d.timestamp));
+    setText("platformTop", d.platform);
+    setText("platformData", d.platform);
+    document.getElementById("deviceLabel").innerText = "● " + d.deviceId;
+
+    // No AI model is integrated: an uploaded image is never presented as a confirmed threat.
+    const notAnalyzed = d.analysisStatus === "NOT_ANALYZED";
+    const level = THREAT_LEVELS[d.threatStatus] || { text: d.threatStatus, color: "#123b59" };
+    setStatusText("threatStatus", notAnalyzed ? "PENDING · NOT ANALYZED" : d.threatStatus, level.color);
+    setText("confidence", d.detectionType + " · " + (d.confidence === null ? "--" : Math.round(d.confidence * 100) + "%"));
+    setStatusText("scanStatus", notAnalyzed ? "NOT ANALYZED" : (d.detectionType === "NONE" ? "Clear" : d.detectionType), level.color);
+    setStatusText("threatLevel", level.text, level.color);
+
+    if (d.threatStatus === "SUSPICIOUS" || d.threatStatus === "THREAT") {
+        const label = document.getElementById("detectionLabel");
+        box.style.display = "block";
+        box.style.borderColor = level.color;
+        label.innerText = d.threatStatus + ": " + d.detectionType;
+        label.style.background = level.color;
+        label.style.color = "white";
+    } else {
+        box.style.display = "none";
+    }
+}
+
+async function pollLatest() {
+    try {
+        const d = await RakshaApi.request("/api/detections/latest");
+        setConnection(true);
+
+        const eventId = d ? d.id : null;
+        const signature = d ? [d.id, d.threatStatus, d.detectionType, d.confidence].join("|") : "none";
+        if (signature === lastSignature) return;
+
+        const firstLoad = lastEventId === undefined;
+        const isNewEvent = !firstLoad && eventId !== null && eventId !== lastEventId;
+        lastEventId = eventId;
+        lastSignature = signature;
+        renderLatest(d);
+
+        if (isNewEvent) {
+            showAlert("🚨 New RFID detection: " + d.rfidUid + " on " + d.readerId);
+            if (historyPage === 1) loadHistory(d.id);
+            pollStats();
+        } else if (!firstLoad) {
+            loadHistory(); // analysis result changed for the current event
+        }
+    } catch (error) {
+        if (error.status !== 401) setConnection(false);
+    }
+}
+
+// ---------------- Device + system status ----------------
+
+function signalQuality(rssi) {
+    if (rssi >= -60) return "Excellent";
+    if (rssi >= -70) return "Good";
+    if (rssi >= -80) return "Fair";
+    return "Weak";
+}
+
+function renderDeviceStatus(stats) {
+    const online = stats.cameraStatus === "ONLINE";
+    setStatusText("cameraStatus", stats.cameraStatus, online ? "#16a34a" : "#c62828");
+
+    const device = (latest && stats.devices.find(function(x) { return x.deviceId === latest.deviceId; })) || stats.devices[0] || null;
+    if (!device) {
+        setText("deviceName", "No device registered");
+        setText("wifiSignal", null);
+        setText("deviceIp", null);
+        setText("lastSeen", "Never");
+        return;
+    }
+    setStatusText("deviceName", device.deviceName + " (" + device.status + ")", device.status === "ONLINE" ? "#16a34a" : "#c62828");
+    setText("wifiSignal", device.wifiSignal === null ? null : device.wifiSignal + " dBm · " + signalQuality(device.wifiSignal));
+    setText("deviceIp", device.ipAddress);
+    setText("lastSeen", device.lastSeen ? RakshaApi.timeAgo(device.lastSeen) : "Never");
+}
+
+function renderSystemStatus(stats) {
+    const el = document.getElementById("systemStatus");
+    const t = stats.threatSummary;
+    if (stats.totalDetections === 0) {
+        el.className = "safety-status idle";
+        el.innerText = "● WAITING FOR FIRST CAPTURE";
+    } else if (t.THREAT > 0) {
+        el.className = "safety-status danger";
+        el.innerText = "● " + t.THREAT + " THREAT(S) FLAGGED";
+    } else if (t.SUSPICIOUS > 0) {
+        el.className = "safety-status pending";
+        el.innerText = "● " + t.SUSPICIOUS + " SUSPICIOUS";
+    } else if (t.PENDING > 0) {
+        el.className = "safety-status pending";
+        el.innerText = "● " + t.PENDING + " PENDING REVIEW";
+    } else {
+        el.className = "safety-status";
+        el.innerText = "● SYSTEM CLEAR";
+    }
+}
+
+async function pollStats() {
+    try {
+        const stats = await RakshaApi.request("/api/dashboard/stats");
+        renderDeviceStatus(stats);
+        renderSystemStatus(stats);
+    } catch (error) {
+        if (error.status !== 401) setConnection(false);
+    }
+}
+
+// ---------------- Detection history ----------------
+
+function cell(text) {
+    const td = document.createElement("td");
+    td.innerText = text || "--";
+    return td;
+}
+
+function messageRow(text) {
+    const tr = document.createElement("tr");
+    tr.className = "empty-row";
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.innerText = text;
+    tr.appendChild(td);
+    return tr;
+}
+
+function historyRow(d, highlightId) {
+    const tr = document.createElement("tr");
+    if (d.id === highlightId) tr.className = "new-row";
+
+    const imageCell = document.createElement("td");
+    const img = document.createElement("img");
+    img.src = d.thumbnailUrl || d.imageUrl;
+    img.alt = "Capture for RFID " + d.rfidUid;
+    img.title = "Open full image";
+    img.loading = "lazy";
+    img.onclick = function() { window.open(d.imageUrl, "_blank", "noopener"); };
+    imageCell.appendChild(img);
+
+    const statusCell = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.style.background = RakshaApi.threatColor(d.threatStatus);
+    badge.innerText = d.analysisStatus === "NOT_ANALYZED" ? "PENDING · NOT ANALYZED" : d.threatStatus + " · " + d.detectionType;
+    statusCell.appendChild(badge);
+
+    tr.append(imageCell, cell(RakshaApi.formatDateTime(d.timestamp)), cell(d.rfidUid), cell(d.readerId), cell(d.platform), cell(d.deviceId), statusCell);
+    return tr;
+}
+
+function historyQuery() {
+    const params = new URLSearchParams({ page: String(historyPage), limit: String(HISTORY_LIMIT) });
+    const filters = {
+        rfidUid: document.getElementById("filterRfid").value.trim(),
+        readerId: document.getElementById("filterReader").value,
+        platform: document.getElementById("platform").value,
+        fromDate: document.getElementById("filterFrom").value,
+        toDate: document.getElementById("filterTo").value
+    };
+    Object.keys(filters).forEach(function(key) { if (filters[key]) params.set(key, filters[key]); });
+    return params.toString();
+}
+
+async function loadHistory(highlightId) {
+    const body = document.getElementById("historyBody");
+    try {
+        const data = await RakshaApi.request("/api/detections?" + historyQuery());
+        const rows = data.items.map(function(d) { return historyRow(d, highlightId); });
+        body.replaceChildren.apply(body, rows.length ? rows : [messageRow("No detections found for these filters.")]);
+
+        historyPage = data.page;
+        document.getElementById("pageInfo").innerText = "Page " + data.page + " of " + data.totalPages;
+        document.getElementById("prevPage").disabled = data.page <= 1;
+        document.getElementById("nextPage").disabled = data.page >= data.totalPages;
+        document.getElementById("historyCount").innerText = data.total + " record" + (data.total === 1 ? "" : "s");
+    } catch (error) {
+        if (error.status === 401) return;
+        body.replaceChildren(messageRow("⚠️ " + error.message));
+    }
+}
+
+function applyFilters() {
+    historyPage = 1;
+    loadHistory();
+}
+
+function changePage(delta) {
+    historyPage = Math.max(1, historyPage + delta);
+    loadHistory();
+}
+
+function changePlatform() {
+    let platform = document.getElementById("platform").value;
+    applyFilters();
+    showAlert("🚉 History filter: " + (platform || "All Platforms"));
+}
+
+// ---------------- Controls ----------------
+
+function setConnection(ok) {
+    if (ok === connectionOk) return;
+    connectionOk = ok;
+    if (ok) {
+        updateLiveBadge();
+        showAlert("✅ Connection restored");
+    } else {
+        const badge = document.getElementById("liveBadge");
+        badge.innerText = "RECONNECTING";
+        badge.className = "live offline";
+        showAlert("⚠️ Connection to Raksha Rail cloud lost - retrying...");
+    }
+}
+
+function updateLiveBadge() {
+    const badge = document.getElementById("liveBadge");
+    const paused = latestPoller && latestPoller.paused;
+    badge.innerText = paused ? "PAUSED" : "LIVE";
+    badge.className = paused ? "live paused" : "live";
+}
+
+function togglePolling() {
+    if (!latestPoller) return;
+    const button = document.getElementById("pauseBtn");
+    if (latestPoller.paused) {
+        latestPoller.resume();
+        statsPoller.resume();
+        button.innerText = "⛔ Pause Live Updates";
+        showAlert("▶ Live updates resumed");
+    } else {
+        latestPoller.stop();
+        statsPoller.stop();
+        button.innerText = "▶ Resume Live Updates";
+        showAlert("⏸ Live updates paused");
+    }
+    updateLiveBadge();
+}
+
+function refreshNow() {
+    pollLatest();
+    pollStats();
+    loadHistory();
+    showAlert("🔄 Refreshing live data...");
+}
+
+function openFullImage() {
+    if (!latest) { alert("No capture has been received from the ESP32-CAM yet."); return; }
+    window.open(latest.imageUrl, "_blank", "noopener");
+}
+
+function getLocation() {
+    if(!navigator.geolocation) { alert("Geolocation not supported by this browser."); return; }
+    document.getElementById("gpsStatus").innerText = "Detecting...";
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            document.getElementById("latitude").innerText = position.coords.latitude.toFixed(6);
+            document.getElementById("longitude").innerText = position.coords.longitude.toFixed(6);
+            document.getElementById("gpsStatus").innerText = "GPS Active";
+            showAlert("📍 GPS Location Locked");
+        },
+        function(error) {
+            document.getElementById("gpsStatus").innerText = "Permission Required";
+            alert("Please allow GPS location permission.");
+        }
+    );
+}
+
+setInterval(function() {
+    document.getElementById("time").innerText = latest
+        ? "📸 " + RakshaApi.formatTime(latest.timestamp) + " · " + RakshaApi.timeAgo(latest.createdAt)
+        : new Date().toLocaleTimeString();
+}, 1000);
+
+function showAlert(message) {
+    let alertBox = document.getElementById("alert");
+    alertBox.innerText = message;
+    alertBox.style.display = "block";
+    setTimeout(function() { alertBox.style.display = "none"; }, 2500);
+}
+
+document.getElementById("filterRfid").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") applyFilters();
+});
+
+RakshaApi.requireSession()
+    .then(function(user) {
+        document.getElementById("userChip").innerText = "👮 " + user.username + " (" + user.role + ")";
+    })
+    .catch(function(error) {
+        showAlert("⚠️ " + error.message);
+    })
+    .then(function() {
+        latestPoller = RakshaApi.startPolling(pollLatest, LATEST_POLL_MS);
+        statsPoller = RakshaApi.startPolling(pollStats, STATS_POLL_MS);
+        loadHistory();
+    });
+</script>
+</body>
+</html>

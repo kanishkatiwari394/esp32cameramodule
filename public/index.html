@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raksha Rail - System Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image:
+                linear-gradient(
+                    rgba(7, 47, 82, 0.75),
+                    rgba(7, 89, 133, 0.85)
+                ),
+                url("https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=2000&q=85");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 900px;
+            min-height: 520px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .welcome {
+            width: 50%;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            background: rgba(3, 27, 45, 0.45);
+        }
+
+        .welcome h1 { font-size: 38px; margin-bottom: 10px; }
+        .welcome h2 { color: #facc15; margin-bottom: 15px; font-size: 20px; }
+        .welcome p { font-size: 14px; line-height: 1.6; color: #e2e8f0; }
+        .shield-icon { font-size: 60px; margin-bottom: 15px; }
+
+        .login {
+            width: 50%;
+            padding: 45px 40px;
+            background: rgba(255, 255, 255, 0.96);
+        }
+
+        .login h2 { text-align: center; font-size: 26px; color: #073b66; margin-bottom: 6px; }
+        .login-subtitle { text-align: center; color: #64748b; margin-bottom: 25px; font-size: 14px; }
+
+        .input-box { margin-bottom: 18px; }
+        .input-box label { display: block; margin-bottom: 6px; color: #1e293b; font-weight: bold; font-size: 14px; }
+        .input-box input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus {
+            border-color: #075985;
+            box-shadow: 0 0 8px rgba(7, 89, 133, 0.25);
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0 20px;
+            font-size: 13px;
+        }
+
+        .options a { color: #075985; text-decoration: none; font-weight: bold; }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #075985, #0f766e);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(7, 89, 133, 0.35);
+        }
+
+        .login-btn:disabled { opacity: 0.75; cursor: wait; transform: none; box-shadow: none; }
+
+        .login-message { min-height: 18px; margin-top: 12px; text-align: center; font-size: 13px; font-weight: bold; color: #c62828; }
+        .login-message.success { color: #0f766e; }
+
+        .register { text-align: center; margin-top: 20px; color: #64748b; font-size: 13px; }
+        .register a { color: #075985; font-weight: bold; text-decoration: none; }
+
+        .train {
+            position: absolute;
+            bottom: 20px;
+            left: -250px;
+            font-size: 60px;
+            animation: trainMove 12s linear infinite;
+        }
+
+        @keyframes trainMove {
+            0% { left: -250px; }
+            100% { left: 110%; }
+        }
+
+        @media (max-width: 800px) {
+            .container { width: 90%; flex-direction: column; }
+            .welcome, .login { width: 100%; }
+            .welcome { padding: 30px; text-align: center; }
+            .welcome h1 { font-size: 30px; }
+            .login { padding: 30px; }
+            .train { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="train">🚆</div>
+
+    <div class="container">
+        <div class="welcome">
+            <div class="shield-icon">🛡️</div>
+            <h1>Raksha Rail</h1>
+            <h2>Mobile-Based Safety System</h2>
+            <p>Real-time monitoring system for detecting narcotics, explosive risks, and driver alert states across Indian Railways.</p>
+        </div>
+
+        <div class="login">
+            <h2>Authorized Login</h2>
+            <p class="login-subtitle">Sign in to access safety dashboard</p>
+
+            <form onsubmit="loginUser(event)">
+                <div class="input-box">
+                    <label for="email">Officer / Driver ID</label>
+                    <input type="text" id="email" placeholder="Enter Official ID / Email" autocomplete="username" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter Password" autocomplete="current-password" required>
+                </div>
+
+                <div class="options">
+                    <label><input type="checkbox" id="remember"> Remember me</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">🛡️ Secure Login</button>
+                <p class="login-message" id="loginMessage" role="alert"></p>
+            </form>
+
+            <div class="register">
+                Need System Access? <a href="#">Contact Admin</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/raksha-api.js"></script>
+    <script>
+        async function loginUser(event) {
+            event.preventDefault();
+            let identifier = document.getElementById("email").value.trim();
+            let passwordInput = document.getElementById("password");
+            let button = document.querySelector(".login-btn");
+            let message = document.getElementById("loginMessage");
+
+            if (identifier === "" || passwordInput.value === "") return;
+
+            button.disabled = true;
+            button.innerText = "🛡️ Verifying...";
+            message.className = "login-message";
+            message.innerText = "";
+
+            try {
+                let data = await RakshaApi.request("/api/auth/login", {
+                    method: "POST",
+                    body: {
+                        identifier: identifier,
+                        password: passwordInput.value,
+                        remember: document.getElementById("remember").checked
+                    },
+                    redirectOnUnauthorized: false
+                });
+                message.className = "login-message success";
+                message.innerText = "🛡️ Login Successful! Accessing Raksha Rail Control Dashboard...";
+                window.location.href = data.redirect || "page2.html";
+            } catch (error) {
+                message.innerText = "⚠️ " + error.message;
+                passwordInput.value = "";
+                button.disabled = false;
+                button.innerText = "🛡️ Secure Login";
+            }
+        }
+
+        // Already signed in? Go straight to the dashboard.
+        RakshaApi.request("/api/auth/me", { redirectOnUnauthorized: false })
+            .then(function() { window.location.replace("page2.html"); })
+            .catch(function() {});
+    </script>
+</body>
+</html>

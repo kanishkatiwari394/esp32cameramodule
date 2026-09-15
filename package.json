@@ -1,0 +1,25 @@
+{
+  "name": "raksha-rail",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Raksha Rail - RFID-triggered ESP32-CAM railway safety monitoring on Vercel + MongoDB Atlas + Cloudinary",
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "create-user": "node --env-file-if-exists=.env scripts/create-user.mjs",
+    "test-upload": "node --env-file-if-exists=.env scripts/test-upload.mjs",
+    "dev": "node --env-file-if-exists=.env scripts/dev-server.mjs"
+  },
+  "dependencies": {
+    "@vercel/functions": "^3.9.7",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.6.0"
+  },
+  "devDependencies": {
+    "mongodb-memory-server-core": "^11.2.0"
+  }
+}

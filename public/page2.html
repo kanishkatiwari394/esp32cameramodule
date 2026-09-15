@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raksha Rail - Control Dashboard</title>
+    <script>document.documentElement.classList.add("auth-pending");</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #eef3f7; color: #1e293b; }
+
+        header {
+            height: 75px;
+            background: linear-gradient(90deg, #073b66, #075985);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo-icon { width: 45px; height: 45px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 25px; }
+        .logo h2 { font-size: 21px; }
+        .logo p { font-size: 12px; opacity: 0.8; margin-top: 3px; }
+
+        .nav-links { display: flex; align-items: center; gap: 15px; }
+        .nav-btn {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.35); }
+        .logout-btn { background: #c62828; }
+        .logout-btn:hover { background: #b71c1c; }
+
+        .main { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
+
+        .hero {
+            min-height: 205px;
+            border-radius: 22px;
+            padding: 35px;
+            color: white;
+            background: linear-gradient(rgba(3, 27, 45, 0.85), rgba(3, 27, 45, 0.85)),
+                        url("https://images.unsplash.com/photo-1474487548417-781cb71495f3?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .hero h1 { font-size: 32px; margin-bottom: 12px; }
+        .hero p { max-width: 800px; line-height: 1.6; color: #e2e8f0; }
+        .active { display: inline-block; margin-top: 20px; background: #31b34a; padding: 9px 18px; border-radius: 25px; font-weight: bold; }
+
+        .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 25px; }
+        .card { background: white; min-height: 160px; border-radius: 18px; padding: 25px 15px; text-align: center; cursor: pointer; border: 2px solid transparent; box-shadow: 0 5px 20px rgba(0,0,0,0.08); transition: 0.3s; }
+        .card:hover { transform: translateY(-7px); border-color: #1685b5; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .icon { width: 55px; height: 55px; margin: auto; border-radius: 50%; background: #e8f5fa; display: flex; align-items: center; justify-content: center; font-size: 30px; margin-bottom: 15px; }
+        .card h3 { font-size: 17px; margin-bottom: 8px; }
+        .card p { font-size: 13px; color: #64748b; }
+
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 22px; }
+        .panel { background: white; border-radius: 18px; padding: 25px; min-height: 200px; box-shadow: 0 5px 20px rgba(0,0,0,0.07); }
+        .panel h2 { margin-bottom: 20px; font-size: 18px; color: #073b66; }
+
+        .attention { display: flex; justify-content: center; align-items: center; height: 120px; }
+        .circle { width: 125px; height: 125px; border-radius: 50%; border: 16px solid #d8e5df; border-top-color: #20a447; border-right-color: #20a447; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; color: #16803b; text-align: center; }
+
+        .scanner-status { text-align: center; padding: 20px 0; }
+        .status-badge { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 10px 20px; border-radius: 20px; font-weight: bold; margin-bottom: 10px; }
+
+        .safety { margin-top: 22px; background: linear-gradient(135deg, #075985, #0f766e); color: white; padding: 25px; border-radius: 18px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .safety h2 { margin-bottom: 10px; }
+        .safety p { line-height: 1.6; }
+
+        .modal { display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); align-items: center; justify-content: center; z-index: 1000; }
+        .modal-box { width: 420px; max-width: 90%; background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .modal-icon { font-size: 55px; margin-bottom: 15px; }
+        .modal-box h2 { margin-bottom: 12px; }
+        .modal-box p { color: #64748b; line-height: 1.6; }
+        .close-btn { margin-top: 20px; padding: 10px 25px; border: none; border-radius: 8px; background: #075985; color: white; cursor: pointer; }
+
+        /* ---- Live cloud data ---- */
+        .auth-pending body { visibility: hidden; }
+        .user-chip { color: #e2e8f0; font-size: 13px; }
+        .active.offline { background: #c62828; }
+        .active.checking { background: #64748b; }
+        .card .card-status { margin-top: 10px; font-size: 12px; font-weight: bold; color: #b45309; }
+        .circle.pending { border-color: #e2e8f0; border-top-color: #b45309; border-right-color: #b45309; color: #b45309; }
+        .circle.warning { border-top-color: #e86f00; border-right-color: #e86f00; color: #e86f00; font-size: 20px; }
+        .circle.danger { border-top-color: #c62828; border-right-color: #c62828; color: #c62828; font-size: 20px; }
+        .index-caption { text-align: center; font-size: 13px; color: #64748b; margin-top: 15px; line-height: 1.5; }
+        .status-badge.online { background: #dcfce7; color: #15803d; }
+        .status-badge.offline { background: #fee2e2; color: #b91c1c; }
+        .status-list { list-style: none; margin-top: 12px; font-size: 13px; color: #475569; line-height: 1.9; }
+        .modal-box .modal-note { margin-top: 12px; font-weight: bold; color: #b45309; }
+
+        @media(max-width: 800px) {
+            .cards { grid-template-columns: 1fr; }
+            .dashboard { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 26px; }
+            .user-chip { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-icon">🛡️</div>
+        <div>
+            <h2>Raksha Rail</h2>
+            <p>Mobile Detection System</p>
+        </div>
+    </div>
+
+    <div class="nav-links">
+        <span class="user-chip" id="userChip"></span>
+        <a href="page3.html" class="nav-btn">📷 Camera & Detection</a>
+        <a href="index.html" class="nav-btn logout-btn" onclick="RakshaApi.logout(event)">🚪 Logout</a>
+    </div>
+</header>
+
+<div class="main">
+    <section class="hero">
+        <h1>Narcotics And Explosive Across Indian Railways</h1>
+        <p>Handheld monitoring system for real-time detection of suspicious baggage, contraband trace, and hazard alerts.</p>
+        <span class="active checking" id="sensorsBadge">● CHECKING SENSORS...</span>
+    </section>
+
+    <section class="cards">
+        <div class="card" onclick="showFeature('narcotics')">
+            <div class="icon">🧪</div>
+            <h3>Narcotics Scanner</h3>
+            <p>Chemical contraband detection</p>
+            <p class="card-status" id="narcoticsStatus">NOT ANALYZED</p>
+        </div>
+
+        <div class="card" onclick="showFeature('explosive')">
+            <div class="icon">💣</div>
+            <h3>Explosive Trace</h3>
+            <p>Vapor & particle detection</p>
+            <p class="card-status" id="explosiveStatus">NOT ANALYZED</p>
+        </div>
+
+        <div class="card" onclick="window.location.href='page3.html'">
+            <div class="icon">📍</div>
+            <h3>Live Surveillance</h3>
+            <p>Camera & platform location</p>
+            <p class="card-status" id="surveillanceStatus">Checking camera...</p>
+        </div>
+    </section>
+
+    <section class="dashboard">
+        <div class="panel">
+            <h2>🛡️ System Security Index</h2>
+            <div class="attention">
+                <div class="circle pending" id="securityIndex">--</div>
+            </div>
+            <p class="index-caption" id="securityCaption">Loading live data...</p>
+        </div>
+
+        <div class="panel">
+            <h2>📊 Trace Detector Status</h2>
+            <div class="scanner-status">
+                <div class="status-badge" id="cameraBadge">CHECKING CAMERA...</div>
+                <p id="traceSummary">Loading live data from Raksha Rail cloud...</p>
+                <ul class="status-list">
+                    <li>📷 Active devices: <strong id="activeDevices">--</strong></li>
+                    <li>🏷️ Detections today: <strong id="detectionsToday">--</strong> · Total: <strong id="totalDetections">--</strong></li>
+                    <li>🕒 Last capture: <strong id="lastCapture">--</strong></li>
+                    <li>🧪 Trace analysis: <strong id="traceAnalysis">NOT ANALYZED</strong></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="safety">
+        <h2>🛡️ Safety & Security Operations</h2>
+        <p>This security system links RFID-triggered ESP32-CAM captures, cloud image storage and live dashboards to assist RPF and security teams. Narcotics and explosive trace analysis is a planned AI module: until it is integrated, every capture is stored as PENDING and NOT ANALYZED for manual review.</p>
+    </section>
+</div>
+
+<div class="modal" id="featureModal">
+    <div class="modal-box">
+        <div class="modal-icon" id="modalIcon"></div>
+        <h2 id="modalTitle"></h2>
+        <p id="modalText"></p>
+        <p class="modal-note" id="modalNote"></p>
+        <button class="close-btn" onclick="closeFeature()">Close</button>
+    </div>
+</div>
+
+<script src="js/raksha-api.js"></script>
+<script>
+let latestStats = null;
+
+function showFeature(feature) {
+    let title = "", text = "", icon = "";
+
+    if (feature === "narcotics") {
+        title = "Narcotics Detection"; icon = "🧪";
+        text = "Planned module: AI analysis of RFID-triggered camera captures for narcotics indicators. No narcotics detection model is integrated yet, so no capture is reported as containing narcotics.";
+    } else if (feature === "explosive") {
+        title = "Explosive Trace Detection"; icon = "💣";
+        text = "Planned module: AI analysis of captures for explosive risk indicators. No explosive detection model or vapor sensor is integrated yet, so no capture is reported as containing explosives.";
+    }
+
+    let note = "Status: NOT ANALYZED";
+    if (latestStats) {
+        note = latestStats.pendingThreats + " capture(s) stored with status PENDING / NOT ANALYZED";
+    }
+
+    document.getElementById("modalIcon").innerHTML = icon;
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modalText").innerText = text;
+    document.getElementById("modalNote").innerText = note;
+    document.getElementById("featureModal").style.display = "flex";
+}
+
+function closeFeature() {
+    document.getElementById("featureModal").style.display = "none";
+}
+
+function renderStats(stats) {
+    const cameraOnline = stats.cameraStatus === "ONLINE";
+    const latest = stats.latestDetection;
+
+    // Hero badge: real device connectivity
+    const badge = document.getElementById("sensorsBadge");
+    if (stats.totalDevices === 0) {
+        badge.className = "active offline";
+        badge.innerText = "● NO DEVICES CONNECTED YET";
+    } else if (stats.activeDevices > 0) {
+        badge.className = "active";
+        badge.innerText = "● SENSORS ACTIVE (" + stats.activeDevices + "/" + stats.totalDevices + ")";
+    } else {
+        badge.className = "active offline";
+        badge.innerText = "● SENSORS OFFLINE";
+    }
+
+    // Feature cards: honest analysis status
+    const analysisText = stats.aiAnalysis === "CONFIGURED" ? "AI SERVICE CONNECTED" : "NOT ANALYZED · AI model not integrated";
+    const pendingText = stats.pendingThreats > 0 ? " · " + stats.pendingThreats + " pending" : "";
+    document.getElementById("narcoticsStatus").innerText = analysisText + pendingText;
+    document.getElementById("explosiveStatus").innerText = analysisText + pendingText;
+
+    const surveillance = document.getElementById("surveillanceStatus");
+    surveillance.innerText = cameraOnline
+        ? "● CAMERA ONLINE · " + stats.detectionsToday + " capture(s) today"
+        : "● CAMERA OFFLINE";
+    surveillance.style.color = cameraOnline ? "#16a34a" : "#c62828";
+
+    // Security index: only computed from analyzed captures, never invented
+    const circle = document.getElementById("securityIndex");
+    const caption = document.getElementById("securityCaption");
+    const summary = stats.threatSummary;
+    if (stats.totalDetections === 0) {
+        circle.className = "circle pending";
+        circle.innerText = "N/A";
+        caption.innerText = "No detections recorded yet";
+    } else if (stats.securityIndex === null) {
+        circle.className = "circle pending";
+        circle.innerText = "N/A";
+        caption.innerText = "NOT ANALYZED · " + stats.pendingThreats + " capture(s) pending review";
+    } else {
+        const value = stats.securityIndex;
+        circle.className = "circle" + (summary.THREAT > 0 || value < 60 ? " danger" : value < 90 ? " warning" : "");
+        circle.innerText = value + "% CLEAR";
+        caption.innerText = "Based on " + summary.analyzed + " analyzed capture(s) · " + summary.PENDING + " pending"
+            + (summary.THREAT > 0 ? " · " + summary.THREAT + " threat(s) flagged" : "");
+    }
+
+    // Trace detector panel
+    const cameraBadge = document.getElementById("cameraBadge");
+    if (stats.totalDevices === 0) {
+        cameraBadge.className = "status-badge offline";
+        cameraBadge.innerText = "NO CAMERA REGISTERED";
+    } else {
+        cameraBadge.className = "status-badge " + (cameraOnline ? "online" : "offline");
+        cameraBadge.innerText = cameraOnline ? "ESP32-CAM ONLINE" : "ESP32-CAM OFFLINE";
+    }
+
+    document.getElementById("traceSummary").innerText = latest
+        ? "Last detection: RFID " + latest.rfidUid + " on " + latest.readerId + " · " + latest.platform
+        : "Waiting for the first RFID-triggered capture.";
+    document.getElementById("activeDevices").innerText = stats.activeDevices + " / " + stats.totalDevices;
+    document.getElementById("detectionsToday").innerText = stats.detectionsToday;
+    document.getElementById("totalDetections").innerText = stats.totalDetections;
+    document.getElementById("lastCapture").innerText = latest ? RakshaApi.timeAgo(latest.createdAt) : "None yet";
+    document.getElementById("traceAnalysis").innerText = stats.aiAnalysis === "CONFIGURED"
+        ? "AI SERVICE CONFIGURED"
+        : "NOT ANALYZED (no AI model)";
+}
+
+async function loadDashboard() {
+    try {
+        const stats = await RakshaApi.request("/api/dashboard/stats");
+        latestStats = stats;
+        renderStats(stats);
+    } catch (error) {
+        if (error.status === 401) return;
+        document.getElementById("traceSummary").innerText = "⚠️ Could not load live data: " + error.message;
+    }
+}
+
+RakshaApi.requireSession()
+    .then(function(user) {
+        document.getElementById("userChip").innerText = "👮 " + user.username + " (" + user.role + ")";
+    })
+    .catch(function(error) {
+        document.getElementById("traceSummary").innerText = "⚠️ " + error.message;
+    })
+    .then(function() {
+        RakshaApi.startPolling(loadDashboard, 5000);
+    });
+</script>
+</body>
+</html>
