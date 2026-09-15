@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="240" viewBox="0 0 1200 240" role="img" aria-labelledby="title desc">
+  <title id="title">ESP32-CAM capture pipeline</title>
+  <desc id="desc">UART trigger, RGB565 capture at 320 by 240, software JPEG conversion, HTTPS multipart upload, HTTP 200 success.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1e1b4b"/>
+      <stop offset="0.5" stop-color="#062f52"/>
+      <stop offset="1" stop-color="#064e3b"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" x2="1">
+      <stop offset="0" stop-color="#f472b6"/>
+      <stop offset="0.5" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#21d66b"/>
+    </linearGradient>
+    <clipPath id="frame"><rect width="1200" height="240" rx="22"/></clipPath>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', Inter, Arial, sans-serif; }
+    .mono { font-family: Consolas, 'Courier New', monospace; }
+    .stage rect.box { fill: #0b1f33; stroke: #334155; stroke-width: 2; }
+    .stage { animation: stage 5s ease-in-out infinite; }
+    @keyframes stage {
+      0% { opacity: 0.45; transform: translateY(0); }
+      6%, 20% { opacity: 1; transform: translateY(-6px); }
+      30%, 100% { opacity: 0.45; transform: translateY(0); }
+    }
+    .s2 { animation-delay: 1s; } .s3 { animation-delay: 2s; } .s4 { animation-delay: 3s; } .s5 { animation-delay: 4s; }
+    .fill { animation: fill 5s linear infinite; }
+    @keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .arrow { animation: nudge 1s ease-in-out infinite; }
+    @keyframes nudge { 50% { transform: translateX(5px); } }
+    .t { font-size: 16px; font-weight: 800; fill: #f8fafc; }
+    .d { font-size: 12.5px; fill: #cbd5e1; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } .stage { opacity: 1; } }
+  </style>
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="240" fill="url(#bg)"/>
+    <text x="40" y="38" font-size="15" font-weight="900" fill="#facc15" letter-spacing="4">ESP32-CAM FIRMWARE · GC2145 (RHYX-M21-45) · NO HARDWARE JPEG</text>
+
+    <g class="stage">
+      <rect class="box" x="40" y="62" width="200" height="118" rx="16" style="stroke:#facc15"/>
+      <text class="mono" x="60" y="92" font-size="13" fill="#facc15">01 · TRIGGER</text>
+      <text class="t" x="60" y="118">UART from UNO</text>
+      <text class="d mono" x="60" y="142">RFID,A1:B2:C3:D4,</text>
+      <text class="d mono" x="60" y="160">RFID-1</text>
+    </g>
+    <text class="arrow" x="246" y="128" font-size="24" fill="#94a3b8">➜</text>
+
+    <g class="stage s2">
+      <rect class="box" x="275" y="62" width="200" height="118" rx="16" style="stroke:#f472b6"/>
+      <text class="mono" x="295" y="92" font-size="13" fill="#f472b6">02 · CAPTURE</text>
+      <text class="t" x="295" y="118">PIXFORMAT_RGB565</text>
+      <text class="d" x="295" y="142">FRAMESIZE_QVGA 320×240</text>
+      <text class="d mono" x="295" y="160">153,600 bytes raw</text>
+    </g>
+    <text class="arrow" x="481" y="128" font-size="24" fill="#94a3b8">➜</text>
+
+    <g class="stage s3">
+      <rect class="box" x="510" y="62" width="200" height="118" rx="16" style="stroke:#a78bfa"/>
+      <text class="mono" x="530" y="92" font-size="13" fill="#a78bfa">03 · CONVERT</text>
+      <text class="t" x="530" y="118">frame2jpg()</text>
+      <text class="d" x="530" y="142">software JPEG, quality 80</text>
+      <text class="d mono" x="530" y="160">≈ 8–15 KB</text>
+    </g>
+    <text class="arrow" x="716" y="128" font-size="24" fill="#94a3b8">➜</text>
+
+    <g class="stage s4">
+      <rect class="box" x="745" y="62" width="200" height="118" rx="16" style="stroke:#38bdf8"/>
+      <text class="mono" x="765" y="92" font-size="13" fill="#38bdf8">04 · UPLOAD</text>
+      <text class="t" x="765" y="118">HTTPS multipart</text>
+      <text class="d" x="765" y="142">X-Device-Key header</text>
+      <text class="d mono" x="765" y="160">/api/device/detection</text>
+    </g>
+    <text class="arrow" x="951" y="128" font-size="24" fill="#94a3b8">➜</text>
+
+    <g class="stage s5">
+      <rect class="box" x="980" y="62" width="180" height="118" rx="16" style="stroke:#21d66b"/>
+      <text class="mono" x="1000" y="92" font-size="13" fill="#21d66b">05 · CONFIRM</text>
+      <text class="t" x="1000" y="118">HTTP 200</text>
+      <text class="d mono" x="1000" y="142">"success":true</text>
+      <text class="d mono" x="1000" y="160">eventId · imageUrl</text>
+    </g>
+
+    <rect x="40" y="204" width="1120" height="10" rx="5" fill="#0b1f33"/>
+    <rect class="fill" x="40" y="204" width="1120" height="10" rx="5" fill="url(#bar)" style="transform-origin: 40px 209px"/>
+  </g>
+</svg>

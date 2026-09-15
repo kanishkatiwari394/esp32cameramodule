@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+  <title id="title">Raksha Rail live data pipeline</title>
+  <desc id="desc">RFID tag to Arduino UNO to ESP32-CAM to Vercel API, which stores the image in Cloudinary and the record in MongoDB Atlas; the dashboard polls for new detections.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#031b2d"/>
+      <stop offset="1" stop-color="#062f52"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b3b5f" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#062338" stop-opacity="0.9"/>
+    </linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <path id="routeImage" d="M90 215 H640 C750 215 760 110 870 110 C980 110 990 215 1110 215"/>
+    <path id="routeRecord" d="M90 215 H640 C750 215 760 320 870 320 C980 320 990 215 1110 215"/>
+    <clipPath id="frame"><rect width="1200" height="460" rx="24"/></clipPath>
+  </defs>
+
+  <style>
+    text { font-family: 'Segoe UI', Inter, Arial, sans-serif; }
+    .mono { font-family: Consolas, 'Courier New', monospace; }
+    .track { fill: none; stroke: #16324d; stroke-width: 6; stroke-linecap: round; }
+    .flow { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 10 16; animation: flow 1.2s linear infinite; }
+    @keyframes flow { to { stroke-dashoffset: -26; } }
+    .node rect.box { fill: url(#card); stroke: #1e5a85; stroke-width: 2; }
+    .node { animation: hit 3s ease-out infinite; }
+    @keyframes hit { 0%, 12% { filter: drop-shadow(0 0 14px #38bdf8); } 30%, 100% { filter: none; } }
+    .n2 { animation-delay: 1s; } .n3 { animation-delay: 2s; } .n4 { animation-delay: 0.15s; } .n5, .n6 { animation-delay: 1.55s; } .n7 { animation-delay: 0s; }
+    .title { font-size: 15px; font-weight: 800; fill: #f8fafc; letter-spacing: 1px; }
+    .sub { font-size: 12.5px; fill: #93c5fd; }
+    .step { font-size: 12px; font-weight: 800; fill: #021526; }
+    .heading { animation: fade 3s ease-in-out infinite; }
+    @keyframes fade { 50% { opacity: 0.6; } }
+    .spin { transform-box: fill-box; transform-origin: center; animation: spin 4s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="460" fill="url(#bg)"/>
+    <text class="heading" x="600" y="46" text-anchor="middle" font-size="22" font-weight="900" fill="#facc15" letter-spacing="5">LIVE DATA PIPELINE</text>
+    <text x="600" y="72" text-anchor="middle" font-size="14" fill="#cbd5e1">Every RFID scan becomes a cloud-stored photo + database record on the public dashboard within seconds</text>
+
+    <g transform="translate(0 34)">
+    <!-- tracks -->
+    <use href="#routeImage" xlink:href="#routeImage" class="track"/>
+    <use href="#routeRecord" xlink:href="#routeRecord" class="track"/>
+    <use href="#routeImage" xlink:href="#routeImage" class="flow" stroke="#38bdf8"/>
+    <use href="#routeRecord" xlink:href="#routeRecord" class="flow" stroke="#21d66b"/>
+
+    <!-- packets (behind glass cards) -->
+    <g filter="url(#glow)">
+      <circle r="8" fill="#38bdf8"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#routeImage" xlink:href="#routeImage"/></animateMotion></circle>
+      <circle r="8" fill="#21d66b"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#routeRecord" xlink:href="#routeRecord"/></animateMotion></circle>
+      <circle r="6" fill="#facc15"><animateMotion dur="6s" begin="-3s" repeatCount="indefinite"><mpath href="#routeImage" xlink:href="#routeImage"/></animateMotion></circle>
+      <circle r="6" fill="#facc15"><animateMotion dur="6s" begin="-3s" repeatCount="indefinite"><mpath href="#routeRecord" xlink:href="#routeRecord"/></animateMotion></circle>
+    </g>
+
+    <!-- 1 RFID -->
+    <g class="node n1">
+      <rect class="box" x="25" y="167" width="130" height="96" rx="16"/>
+      <rect x="62" y="180" width="56" height="34" rx="6" fill="none" stroke="#facc15" stroke-width="3"/>
+      <path d="M75 197 a15 15 0 0 1 30 0 M82 197 a8 8 0 0 1 16 0" fill="none" stroke="#facc15" stroke-width="2.5"/>
+      <text class="title" x="90" y="234" text-anchor="middle">RFID TAG</text>
+      <text class="sub mono" x="90" y="252" text-anchor="middle">A1:B2:C3:D4</text>
+    </g>
+    <!-- 2 Arduino -->
+    <g class="node n2">
+      <rect class="box" x="200" y="167" width="130" height="96" rx="16"/>
+      <rect x="240" y="180" width="50" height="34" rx="4" fill="#0e7490" stroke="#67e8f9" stroke-width="2"/>
+      <path d="M246 180 v-5 M256 180 v-5 M266 180 v-5 M276 180 v-5 M286 180 v-5 M246 214 v5 M256 214 v5 M266 214 v5 M276 214 v5 M286 214 v5" stroke="#67e8f9" stroke-width="2"/>
+      <text class="title" x="265" y="234" text-anchor="middle">ARDUINO UNO</text>
+      <text class="sub" x="265" y="252" text-anchor="middle">reader + servo</text>
+    </g>
+    <!-- 3 ESP32-CAM -->
+    <g class="node n3">
+      <rect class="box" x="375" y="167" width="130" height="96" rx="16"/>
+      <rect x="418" y="180" width="44" height="34" rx="6" fill="#1e293b" stroke="#f472b6" stroke-width="2"/>
+      <circle cx="440" cy="197" r="10" fill="#0f172a" stroke="#f472b6" stroke-width="3"/>
+      <circle cx="440" cy="197" r="3" fill="#f9a8d4"/>
+      <text class="title" x="440" y="234" text-anchor="middle">ESP32-CAM</text>
+      <text class="sub" x="440" y="252" text-anchor="middle">RGB565 → JPEG</text>
+    </g>
+    <!-- 4 Vercel -->
+    <g class="node n4">
+      <rect class="box" x="560" y="160" width="160" height="110" rx="16" style="stroke:#facc15"/>
+      <path d="M640 176 L664 214 H616 Z" fill="#f8fafc"/>
+      <text class="title" x="640" y="236" text-anchor="middle">VERCEL API</text>
+      <text class="sub" x="640" y="254" text-anchor="middle">device key · validate</text>
+    </g>
+    <!-- 5 Cloudinary -->
+    <g class="node n5">
+      <rect class="box" x="795" y="62" width="150" height="96" rx="16"/>
+      <path d="M852 104 a12 12 0 0 1 22 -6 a10 10 0 0 1 16 8 a8 8 0 0 1 -2 16 h-34 a9 9 0 0 1 -2 -18 z" fill="none" stroke="#38bdf8" stroke-width="3"/>
+      <text class="title" x="870" y="138" text-anchor="middle">CLOUDINARY</text>
+      <text class="sub" x="870" y="153" text-anchor="middle">image · secure URL</text>
+    </g>
+    <!-- 6 MongoDB -->
+    <g class="node n6">
+      <rect class="box" x="795" y="272" width="150" height="96" rx="16"/>
+      <path d="M870 282 C882 296 886 308 870 330 C854 308 858 296 870 282 Z" fill="#16a34a" stroke="#86efac" stroke-width="2"/>
+      <path d="M870 290 V338" stroke="#bbf7d0" stroke-width="2"/>
+      <text class="title" x="870" y="350" text-anchor="middle">MONGODB ATLAS</text>
+      <text class="sub" x="870" y="364" text-anchor="middle">detection record</text>
+    </g>
+    <!-- 7 Dashboard -->
+    <g class="node n7">
+      <rect class="box" x="1040" y="167" width="140" height="96" rx="16" style="stroke:#21d66b"/>
+      <rect x="1082" y="178" width="56" height="38" rx="5" fill="#0f172a" stroke="#86efac" stroke-width="2"/>
+      <path d="M1088 206 l10 -10 l8 6 l12 -14 l12 8" fill="none" stroke="#21d66b" stroke-width="2.5"/>
+      <text class="title" x="1110" y="236" text-anchor="middle">DASHBOARD</text>
+      <text class="sub" x="1110" y="254" text-anchor="middle">polls every 3 s</text>
+    </g>
+
+    <!-- step badges -->
+    <g>
+      <circle cx="35" cy="167" r="13" fill="#facc15"/><text class="step" x="35" y="171" text-anchor="middle">1</text>
+      <circle cx="210" cy="167" r="13" fill="#facc15"/><text class="step" x="210" y="171" text-anchor="middle">2</text>
+      <circle cx="385" cy="167" r="13" fill="#facc15"/><text class="step" x="385" y="171" text-anchor="middle">3</text>
+      <circle cx="570" cy="160" r="13" fill="#facc15"/><text class="step" x="570" y="164" text-anchor="middle">4</text>
+      <circle cx="805" cy="62" r="13" fill="#facc15"/><text class="step" x="805" y="66" text-anchor="middle">5</text>
+      <circle cx="805" cy="272" r="13" fill="#facc15"/><text class="step" x="805" y="276" text-anchor="middle">6</text>
+      <circle cx="1050" cy="167" r="13" fill="#facc15"/><text class="step" x="1050" y="171" text-anchor="middle">7</text>
+    </g>
+
+    <!-- legend -->
+    <g transform="translate(0 0)">
+      <rect x="170" y="392" width="860" height="26" rx="13" fill="#021526" stroke="#16324d"/>
+      <circle cx="198" cy="405" r="6" fill="#38bdf8"/><text x="212" y="410" font-size="13" fill="#cbd5e1">image bytes → Cloudinary</text>
+      <circle cx="418" cy="405" r="6" fill="#21d66b"/><text x="432" y="410" font-size="13" fill="#cbd5e1">imageUrl + RFID data → MongoDB</text>
+      <circle cx="672" cy="405" r="6" fill="#facc15"/><text x="686" y="410" font-size="13" fill="#cbd5e1">next RFID scan · HTTPS everywhere</text>
+    </g>
+  </g>
+  </g>
+</svg>

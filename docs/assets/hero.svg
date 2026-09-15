@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
+  <title id="title">Raksha Rail</title>
+  <desc id="desc">RFID-triggered ESP32-CAM railway safety monitoring on Vercel, Cloudinary and MongoDB Atlas</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#021526"/>
+      <stop offset="0.55" stop-color="#062f52"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <linearGradient id="titleFill" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#bae6fd"/>
+      <stop offset="1" stop-color="#facc15"/>
+    </linearGradient>
+    <linearGradient id="shieldFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop offset="0" stop-color="#38bdf8" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="scan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#21d66b" stop-opacity="0"/>
+      <stop offset="1" stop-color="#21d66b" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#21d66b" stop-opacity="0"/>
+      <stop offset="1" stop-color="#21d66b" stop-opacity="0.6"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#38bdf8" stroke-opacity="0.09"/>
+    </pattern>
+    <filter id="blur" x="-20%" y="-50%" width="140%" height="200%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <clipPath id="frame"><rect width="1200" height="400" rx="26"/></clipPath>
+    <clipPath id="typing">
+      <rect x="360" y="212" height="40" width="0">
+        <animate attributeName="width" values="0;760;760;0" keyTimes="0;0.45;0.9;1" dur="9s" repeatCount="indefinite"/>
+      </rect>
+    </clipPath>
+  </defs>
+
+  <style>
+    text { font-family: 'Segoe UI', Inter, Arial, sans-serif; }
+    .mono { font-family: Consolas, 'Courier New', monospace; }
+    .grid { animation: gridMove 6s linear infinite; }
+    @keyframes gridMove { to { transform: translate(40px, 40px); } }
+    .scanline { animation: scan 4s ease-in-out infinite; }
+    @keyframes scan { 0% { transform: translateY(-140px); } 100% { transform: translateY(420px); } }
+    .ring { transform-origin: 200px 185px; animation: pulse 2.6s ease-out infinite; }
+    .ring.r2 { animation-delay: 1.3s; }
+    @keyframes pulse { 0% { transform: scale(0.65); opacity: 0.9; } 100% { transform: scale(1.9); opacity: 0; } }
+    .shield { animation: float 4s ease-in-out infinite; }
+    @keyframes float { 50% { transform: translateY(-9px); } }
+    .check { stroke-dasharray: 90; animation: draw 4s ease-in-out infinite; }
+    @keyframes draw { 0% { stroke-dashoffset: 90; } 30%, 80% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 90; } }
+    .glowTitle { animation: glow 3s ease-in-out infinite; }
+    @keyframes glow { 50% { opacity: 0.25; } }
+    .pill { opacity: 0; animation: fadeUp 0.9s ease-out forwards; }
+    .pill.d2 { animation-delay: 0.35s; } .pill.d3 { animation-delay: 0.7s; } .pill.d4 { animation-delay: 1.05s; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .blink { animation: blink 1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .liveDot { animation: live 1.4s ease-in-out infinite; }
+    @keyframes live { 50% { opacity: 0.25; } }
+    .radar { transform-origin: 1085px 95px; animation: spin 3s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .blip { animation: live 3s ease-in-out infinite; }
+    .sleepers { animation: sleepers 0.5s linear infinite; }
+    @keyframes sleepers { to { transform: translateX(-40px); } }
+    .train { animation: train 10s linear infinite; }
+    @keyframes train { 0% { transform: translateX(-380px); } 100% { transform: translateX(1280px); } }
+    .beam { animation: live 0.9s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } .pill { opacity: 1; } }
+  </style>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="400" fill="url(#bg)"/>
+    <rect class="grid" x="-40" y="-40" width="1280" height="480" fill="url(#grid)"/>
+    <rect class="scanline" x="0" y="0" width="1200" height="140" fill="url(#scan)"/>
+
+    <!-- shield -->
+    <circle cx="200" cy="185" r="135" fill="url(#halo)"/>
+    <circle class="ring" cx="200" cy="185" r="78" fill="none" stroke="#38bdf8" stroke-width="3"/>
+    <circle class="ring r2" cx="200" cy="185" r="78" fill="none" stroke="#21d66b" stroke-width="3"/>
+    <g class="shield">
+      <path d="M200 92 L270 120 V183 C270 232 240 266 200 282 C160 266 130 232 130 183 V120 Z" fill="url(#shieldFill)" stroke="#e0f2fe" stroke-width="4"/>
+      <path d="M200 92 L270 120 V183 C270 232 240 266 200 282 Z" fill="#ffffff" fill-opacity="0.12"/>
+      <path class="check" d="M168 186 L192 210 L236 162" fill="none" stroke="#ffffff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- radar -->
+    <g opacity="0.9">
+      <circle cx="1085" cy="95" r="62" fill="#021526" fill-opacity="0.55" stroke="#21d66b" stroke-opacity="0.6" stroke-width="2"/>
+      <circle cx="1085" cy="95" r="40" fill="none" stroke="#21d66b" stroke-opacity="0.35"/>
+      <circle cx="1085" cy="95" r="18" fill="none" stroke="#21d66b" stroke-opacity="0.35"/>
+      <path d="M1023 95 H1147 M1085 33 V157" stroke="#21d66b" stroke-opacity="0.25"/>
+      <path class="radar" d="M1085 95 L1147 95 A62 62 0 0 0 1128 51 Z" fill="url(#sweep)"/>
+      <circle class="blip" cx="1110" cy="72" r="5" fill="#facc15"/>
+      <text x="1085" y="182" text-anchor="middle" font-size="12" fill="#86efac" letter-spacing="2">DEVICE ONLINE</text>
+    </g>
+
+    <!-- title -->
+    <text x="360" y="118" font-size="16" font-weight="700" fill="#facc15" letter-spacing="4">INDIAN RAILWAYS · SMART SAFETY MONITORING</text>
+    <text class="glowTitle" x="356" y="192" font-size="82" font-weight="900" fill="#38bdf8" filter="url(#blur)" letter-spacing="3">RAKSHA RAIL</text>
+    <text x="356" y="192" font-size="82" font-weight="900" fill="url(#titleFill)" letter-spacing="3">RAKSHA RAIL</text>
+
+    <g clip-path="url(#typing)">
+      <text class="mono" x="362" y="240" font-size="22" fill="#e2e8f0">RFID ▸ ESP32-CAM ▸ Vercel ▸ Cloudinary + MongoDB ▸ Dashboard</text>
+    </g>
+    <rect class="blink" x="362" y="220" width="12" height="26" fill="#21d66b">
+      <animate attributeName="x" values="362;1100;1100;362" keyTimes="0;0.45;0.9;1" dur="9s" repeatCount="indefinite"/>
+    </rect>
+
+    <!-- pills -->
+    <g class="pill">
+      <rect x="360" y="256" width="170" height="34" rx="17" fill="#16a34a" fill-opacity="0.2" stroke="#21d66b"/>
+      <circle class="liveDot" cx="381" cy="273" r="6" fill="#21d66b"/>
+      <text x="396" y="279" font-size="15" font-weight="700" fill="#bbf7d0">LIVE · 3 s POLL</text>
+    </g>
+    <g class="pill d2">
+      <rect x="545" y="256" width="165" height="34" rx="17" fill="#0284c7" fill-opacity="0.2" stroke="#38bdf8"/>
+      <text x="627" y="279" text-anchor="middle" font-size="15" font-weight="700" fill="#bae6fd">HTTPS · JWT · bcrypt</text>
+    </g>
+    <g class="pill d3">
+      <rect x="725" y="256" width="150" height="34" rx="17" fill="#ca8a04" fill-opacity="0.2" stroke="#facc15"/>
+      <text x="800" y="279" text-anchor="middle" font-size="15" font-weight="700" fill="#fef08a">SERVERLESS</text>
+    </g>
+    <g class="pill d4">
+      <rect x="890" y="256" width="170" height="34" rx="17" fill="#dc2626" fill-opacity="0.18" stroke="#f87171"/>
+      <text x="975" y="279" text-anchor="middle" font-size="15" font-weight="700" fill="#fecaca">NO LOCALHOST</text>
+    </g>
+
+    <!-- track -->
+    <rect x="0" y="330" width="1200" height="70" fill="#010d18" fill-opacity="0.55"/>
+    <g class="sleepers">
+      <path d="M0 0" stroke="none"/>
+      <g fill="#475569" fill-opacity="0.7">
+        <rect x="0" y="352" width="14" height="22" rx="2"/><rect x="40" y="352" width="14" height="22" rx="2"/><rect x="80" y="352" width="14" height="22" rx="2"/><rect x="120" y="352" width="14" height="22" rx="2"/><rect x="160" y="352" width="14" height="22" rx="2"/><rect x="200" y="352" width="14" height="22" rx="2"/><rect x="240" y="352" width="14" height="22" rx="2"/><rect x="280" y="352" width="14" height="22" rx="2"/><rect x="320" y="352" width="14" height="22" rx="2"/><rect x="360" y="352" width="14" height="22" rx="2"/><rect x="400" y="352" width="14" height="22" rx="2"/><rect x="440" y="352" width="14" height="22" rx="2"/><rect x="480" y="352" width="14" height="22" rx="2"/><rect x="520" y="352" width="14" height="22" rx="2"/><rect x="560" y="352" width="14" height="22" rx="2"/><rect x="600" y="352" width="14" height="22" rx="2"/><rect x="640" y="352" width="14" height="22" rx="2"/><rect x="680" y="352" width="14" height="22" rx="2"/><rect x="720" y="352" width="14" height="22" rx="2"/><rect x="760" y="352" width="14" height="22" rx="2"/><rect x="800" y="352" width="14" height="22" rx="2"/><rect x="840" y="352" width="14" height="22" rx="2"/><rect x="880" y="352" width="14" height="22" rx="2"/><rect x="920" y="352" width="14" height="22" rx="2"/><rect x="960" y="352" width="14" height="22" rx="2"/><rect x="1000" y="352" width="14" height="22" rx="2"/><rect x="1040" y="352" width="14" height="22" rx="2"/><rect x="1080" y="352" width="14" height="22" rx="2"/><rect x="1120" y="352" width="14" height="22" rx="2"/><rect x="1160" y="352" width="14" height="22" rx="2"/><rect x="1200" y="352" width="14" height="22" rx="2"/><rect x="1240" y="352" width="14" height="22" rx="2"/>
+      </g>
+    </g>
+    <path d="M0 356 H1200 M0 370 H1200" stroke="#94a3b8" stroke-width="4"/>
+
+    <!-- train -->
+    <g class="train">
+      <path class="beam" d="M372 326 L470 306 L470 346 Z" fill="#fef9c3" fill-opacity="0.25"/>
+      <rect x="20" y="300" width="110" height="46" rx="8" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="2"/>
+      <rect x="32" y="308" width="24" height="16" rx="3" fill="#bae6fd"/><rect x="64" y="308" width="24" height="16" rx="3" fill="#bae6fd"/><rect x="96" y="308" width="24" height="16" rx="3" fill="#bae6fd"/>
+      <rect x="138" y="300" width="110" height="46" rx="8" fill="#0c4a6e" stroke="#7dd3fc" stroke-width="2"/>
+      <rect x="150" y="308" width="24" height="16" rx="3" fill="#bae6fd"/><rect x="182" y="308" width="24" height="16" rx="3" fill="#bae6fd"/><rect x="214" y="308" width="24" height="16" rx="3" fill="#bae6fd"/>
+      <path d="M256 300 H336 C356 300 372 314 372 330 V346 H256 Z" fill="#075985" stroke="#7dd3fc" stroke-width="2"/>
+      <rect x="256" y="330" width="116" height="6" fill="#facc15"/>
+      <rect x="20" y="330" width="228" height="6" fill="#facc15" fill-opacity="0.85"/>
+      <rect x="300" y="308" width="40" height="16" rx="3" fill="#e0f2fe"/>
+      <circle cx="366" cy="324" r="4" fill="#fef08a"/>
+      <g fill="#0f172a" stroke="#94a3b8" stroke-width="2">
+        <circle cx="45" cy="350" r="7"/><circle cx="105" cy="350" r="7"/><circle cx="163" cy="350" r="7"/><circle cx="223" cy="350" r="7"/><circle cx="285" cy="350" r="7"/><circle cx="345" cy="350" r="7"/>
+      </g>
+    </g>
+  </g>
+</svg>
