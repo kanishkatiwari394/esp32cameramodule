@@ -299,7 +299,7 @@ flowchart LR
 ```
 <img src="docs/assets/divider.svg" width="100%" alt=""/>
 
-### 📷 ESP32-CAM firmware logic
+<details><summary><h3>ESP32-CAM firmware logic</h3></summary>
  
 ```mermaid
 flowchart TD
@@ -331,13 +331,14 @@ flowchart TD
   class N good
   class O,B1 bad
 ```
+</details>
  
 > [!WARNING]
 > The camera module is marked **RHYX-M21-45** and behaves like a **GC2145**. It is **not an OV2640** and has **no hardware
 > JPEG**. `PIXFORMAT_JPEG` does not work. The firmware captures `PIXFORMAT_RGB565` at `FRAMESIZE_QVGA` and converts it with
 > `frame2jpg()` in software.
  
-### 🧰 Flash the ESP32-CAM
+<details><summary><h3>Flash the ESP32-CAM</h3></summary>
  
 1. **Arduino IDE → Boards Manager →** install **esp32 by Espressif Systems** (2.0.14+ or 3.x).
 2. Open [`firmware/esp32cam_raksha/esp32cam_raksha.ino`](firmware/esp32cam_raksha/esp32cam_raksha.ino).
@@ -354,6 +355,8 @@ flowchart TD
 4. **Tools:** Board **AI Thinker ESP32-CAM** · PSRAM **Enabled** · Partition **Huge APP (3MB No OTA)**.
 5. Connect **GPIO0 → GND**, press reset, upload. Remove the jumper and press reset again.
 6. Open the **Serial Monitor at 115200 baud**. Power the board from a solid **5 V / 2 A** supply.
+</details>
+
 <details>
 <summary><b>📟 Expected Serial Monitor output (click to expand)</b></summary>
 ```text
